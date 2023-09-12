@@ -7,15 +7,19 @@ import 'package:to_do_zen/src/screens/on_boarding/widgets/on_boarding_page.dart'
 import 'package:to_do_zen/src/screens/on_boarding/widgets/skip_button.dart';
 import 'package:to_do_zen/src/screens/on_boarding/widgets/step_indicator.dart';
 
-class OnBoardingScreen extends StatelessWidget {
+class OnBoardingScreen extends StatefulWidget {
   OnBoardingScreen({super.key});
 
+  @override
+  State<OnBoardingScreen> createState() => _OnBoardingScreenState();
+}
+
+class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final controller = LiquidController();
   int currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-
     final pages = [
       const OnBoardingPage(
         image: onBoarding1,
@@ -38,27 +42,49 @@ class OnBoardingScreen extends StatelessWidget {
           LiquidSwipe(
             liquidController: controller,
             pages: pages,
-            onPageChangeCallback: (int activePageIndex) => currentPageIndex = activePageIndex,
+            onPageChangeCallback: onPageChange,
             slideIconWidget: const Icon(
               Icons.arrow_back_ios,
               color: COLOR_PRIMARY,
             ),
             enableSideReveal: true,
             waveType: WaveType.circularReveal,
+            positionSlideIcon: 0.5,
+            enableLoop: false,
           ),
           Positioned(
-            bottom: 170,
+            bottom: 120,
             child: StepIndicator(
-              step: currentPageIndex + 1,
+              step: controller.currentPage + 1,
             ),
           ),
-          const Positioned(
+          Positioned(
             top: 50,
             left: 20,
-            child: SkipButton(),
+            child: SkipButton(
+              onPressed: () => controller.jumpToPage(page: 1),
+            ),
+          ),
+          Positioned(
+            bottom: 40,
+            child: FloatingActionButton(
+              onPressed: () => {},
+              backgroundColor: COLOR_PRIMARY,
+              foregroundColor: COLOR_LIGHT,
+              elevation: 4,
+              child: const Icon(
+                Icons.arrow_forward,
+              ),
+            ),
           ),
         ],
       ),
     );
+  }
+
+  onPageChange(int activePageIndex) {
+    setState(() {
+      currentPageIndex = activePageIndex;
+    });
   }
 }
