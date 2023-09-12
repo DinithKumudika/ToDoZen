@@ -57,7 +57,7 @@ class WelcomeScreen extends StatelessWidget {
             top: 50,
             left: 20,
             child: IconButton(
-              onPressed: () {},
+              onPressed: () => Navigator.pushNamed(context, '/on_boarding'),
               enableFeedback: false,
               icon: const Icon(
                 Icons.arrow_back_ios,

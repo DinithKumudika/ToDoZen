@@ -71,7 +71,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             top: 50,
             left: 20,
             child: SkipButton(
-              onPressed: () => controller.jumpToPage(page: 1),
+              onPressed: () => controller.jumpToPage(page: 2),
             ),
           ),
           Positioned(
