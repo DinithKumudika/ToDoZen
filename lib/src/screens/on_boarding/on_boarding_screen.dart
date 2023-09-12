@@ -7,15 +7,20 @@ import 'package:to_do_zen/src/screens/on_boarding/widgets/on_boarding_page.dart'
 import 'package:to_do_zen/src/screens/on_boarding/widgets/skip_button.dart';
 import 'package:to_do_zen/src/screens/on_boarding/widgets/step_indicator.dart';
 
-class OnBoardingScreen extends StatelessWidget {
-  OnBoardingScreen({super.key});
+class OnBoardingScreen extends StatefulWidget {
+  const OnBoardingScreen({super.key});
 
+  @override
+  State<OnBoardingScreen> createState() => _OnBoardingScreenState();
+}
+
+class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final controller = LiquidController();
-  int currentPageIndex = 0;
+  int _currentPageIndex = 0;
+  bool _onLastPage = false;
 
   @override
   Widget build(BuildContext context) {
-
     final pages = [
       const OnBoardingPage(
         image: onBoarding1,
@@ -29,6 +34,12 @@ class OnBoardingScreen extends StatelessWidget {
         subTitle: onBoardingSubTitleSecond,
         bgColor: COLOR_TERTIARY,
       ),
+      const OnBoardingPage(
+        image: onBoarding3,
+        title: onBoardingTitleThird,
+        subTitle: onBoardingSubTitleThird,
+        bgColor: COLOR_ON_BOARDING_THIRD,
+      ),
     ];
 
     return Scaffold(
@@ -38,27 +49,76 @@ class OnBoardingScreen extends StatelessWidget {
           LiquidSwipe(
             liquidController: controller,
             pages: pages,
-            onPageChangeCallback: (int activePageIndex) => currentPageIndex = activePageIndex,
-            slideIconWidget: const Icon(
-              Icons.arrow_back_ios,
-              color: COLOR_PRIMARY,
-            ),
+            onPageChangeCallback: onPageChange,
+            slideIconWidget: _currentPageIndex == 2
+                ? null
+                : const Icon(
+                    Icons.arrow_back_ios,
+                    color: COLOR_PRIMARY,
+                  ),
             enableSideReveal: true,
             waveType: WaveType.circularReveal,
+            positionSlideIcon: 0.5,
+            enableLoop: false,
           ),
           Positioned(
-            bottom: 170,
+            bottom: 120,
             child: StepIndicator(
-              step: currentPageIndex + 1,
+              step: _currentPageIndex + 1,
             ),
           ),
-          const Positioned(
+          Positioned(
             top: 50,
             left: 20,
-            child: SkipButton(),
+            child: SkipButton(
+              onPressed: () => controller.jumpToPage(page: 2),
+            ),
+          ),
+          Positioned(
+            bottom: 40,
+            child: _onLastPage
+                ? ElevatedButton(
+                    onPressed: () => Navigator.pushNamed(context, '/welcome'),
+                    autofocus: true,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: COLOR_PRIMARY,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10.0,
+                        horizontal: 20.0
+                      ),
+                    ),
+                    child: const Text(
+                      "Get Started",
+                      style: TextStyle(
+                        color: COLOR_LIGHT,
+                        fontSize: 20.0,
+                      ),
+                    ),
+                  )
+                : FloatingActionButton(
+                    onPressed: () =>
+                        controller.animateToPage(page: _currentPageIndex + 1),
+                    backgroundColor: COLOR_PRIMARY,
+                    foregroundColor: COLOR_LIGHT,
+                    elevation: 4,
+                    child: const Icon(
+                      Icons.arrow_forward,
+                    ),
+                  ),
           ),
         ],
       ),
     );
+  }
+
+  onPageChange(int activePageIndex) {
+    setState(() {
+      _currentPageIndex = activePageIndex;
+      if (activePageIndex == 2) {
+        _onLastPage = true;
+      } else {
+        _onLastPage = false;
+      }
+    });
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:to_do_zen/src/constants/colors.dart';
 
-
 class OnBoardingPage extends StatelessWidget {
   final String image;
   final String title;
@@ -44,7 +43,7 @@ class OnBoardingPage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: size.height * 0.05,
+                  height: size.height * 0.03,
                 ),
                 Text(
                   subTitle,
@@ -54,22 +53,10 @@ class OnBoardingPage extends StatelessWidget {
                   ),
                   textAlign: TextAlign.center,
                 ),
+                SizedBox(
+                  height: size.height * 0.05,
+                ),
               ],
-            ),
-          ),
-          SizedBox(
-            height: size.height * 0.05,
-          ),
-          SizedBox(
-            height: size.height * 0.07,
-          ),
-          FloatingActionButton(
-            onPressed: () => {},
-            backgroundColor: COLOR_PRIMARY,
-            foregroundColor: COLOR_LIGHT,
-            elevation: 4,
-            child: const Icon(
-              Icons.arrow_forward,
             ),
           ),
         ],

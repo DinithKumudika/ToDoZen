@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:to_do_zen/src/constants/colors.dart';
 
 class SkipButton extends StatelessWidget {
-  const SkipButton({super.key});
+
+  Function() onPressed;
+  SkipButton({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.pushNamedAndRemoveUntil(
-        context,
-        '/home',
-        (Route<dynamic> route) => false,
-      ),
+      onTap: onPressed,
       child: Text(
         'Skip'.toUpperCase(),
         textAlign: TextAlign.center,
