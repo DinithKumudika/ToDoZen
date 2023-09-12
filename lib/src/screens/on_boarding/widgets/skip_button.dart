@@ -9,7 +9,7 @@ class SkipButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => onPressed,
+      onTap: onPressed,
       child: Text(
         'Skip'.toUpperCase(),
         textAlign: TextAlign.center,

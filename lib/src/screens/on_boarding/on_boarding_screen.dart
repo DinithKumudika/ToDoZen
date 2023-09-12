@@ -8,7 +8,7 @@ import 'package:to_do_zen/src/screens/on_boarding/widgets/skip_button.dart';
 import 'package:to_do_zen/src/screens/on_boarding/widgets/step_indicator.dart';
 
 class OnBoardingScreen extends StatefulWidget {
-  OnBoardingScreen({super.key});
+  const OnBoardingScreen({super.key});
 
   @override
   State<OnBoardingScreen> createState() => _OnBoardingScreenState();
@@ -16,7 +16,8 @@ class OnBoardingScreen extends StatefulWidget {
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final controller = LiquidController();
-  int currentPageIndex = 0;
+  int _currentPageIndex = 0;
+  bool _onLastPage = false;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +34,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         subTitle: onBoardingSubTitleSecond,
         bgColor: COLOR_TERTIARY,
       ),
+      const OnBoardingPage(
+        image: onBoarding3,
+        title: onBoardingTitleThird,
+        subTitle: onBoardingSubTitleThird,
+        bgColor: COLOR_ON_BOARDING_THIRD,
+      ),
     ];
 
     return Scaffold(
@@ -43,10 +50,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             liquidController: controller,
             pages: pages,
             onPageChangeCallback: onPageChange,
-            slideIconWidget: const Icon(
-              Icons.arrow_back_ios,
-              color: COLOR_PRIMARY,
-            ),
+            slideIconWidget: _currentPageIndex == 2
+                ? null
+                : const Icon(
+                    Icons.arrow_back_ios,
+                    color: COLOR_PRIMARY,
+                  ),
             enableSideReveal: true,
             waveType: WaveType.circularReveal,
             positionSlideIcon: 0.5,
@@ -55,7 +64,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           Positioned(
             bottom: 120,
             child: StepIndicator(
-              step: controller.currentPage + 1,
+              step: _currentPageIndex + 1,
             ),
           ),
           Positioned(
@@ -67,15 +76,35 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           ),
           Positioned(
             bottom: 40,
-            child: FloatingActionButton(
-              onPressed: () => {},
-              backgroundColor: COLOR_PRIMARY,
-              foregroundColor: COLOR_LIGHT,
-              elevation: 4,
-              child: const Icon(
-                Icons.arrow_forward,
-              ),
-            ),
+            child: _onLastPage
+                ? ElevatedButton(
+                    onPressed: () => Navigator.pushNamed(context, '/welcome'),
+                    autofocus: true,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: COLOR_PRIMARY,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10.0,
+                        horizontal: 20.0
+                      ),
+                    ),
+                    child: const Text(
+                      "Get Started",
+                      style: TextStyle(
+                        color: COLOR_LIGHT,
+                        fontSize: 20.0,
+                      ),
+                    ),
+                  )
+                : FloatingActionButton(
+                    onPressed: () =>
+                        controller.animateToPage(page: _currentPageIndex + 1),
+                    backgroundColor: COLOR_PRIMARY,
+                    foregroundColor: COLOR_LIGHT,
+                    elevation: 4,
+                    child: const Icon(
+                      Icons.arrow_forward,
+                    ),
+                  ),
           ),
         ],
       ),
@@ -84,7 +113,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   onPageChange(int activePageIndex) {
     setState(() {
-      currentPageIndex = activePageIndex;
+      _currentPageIndex = activePageIndex;
+      if (activePageIndex == 2) {
+        _onLastPage = true;
+      } else {
+        _onLastPage = false;
+      }
     });
   }
 }
