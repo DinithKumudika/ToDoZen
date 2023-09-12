@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do_zen/firebase_options.dart';
+import 'package:to_do_zen/src/repositories/auth_repository.dart';
 import 'package:to_do_zen/src/screens/splash_screen.dart';
 import 'package:to_do_zen/src/utils/router.dart';
 import 'package:to_do_zen/src/utils/routes.dart';
@@ -10,7 +11,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-  );
+  ).then((value) => Get.put(AuthRepository()));
+  
   runApp(const MyApp());
 }
 
