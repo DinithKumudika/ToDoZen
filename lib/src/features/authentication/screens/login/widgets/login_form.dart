@@ -4,6 +4,8 @@ import 'package:to_do_zen/src/constants/colors.dart';
 import 'package:to_do_zen/src/constants/strings.dart';
 import 'package:to_do_zen/src/features/authentication/controllers/login_controller.dart';
 import 'package:to_do_zen/src/screens/home_screen.dart';
+import 'package:to_do_zen/src/widgets/circular_loader.dart';
+import 'package:to_do_zen/src/widgets/snackbar_alert.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -20,7 +22,9 @@ class _LoginFormState extends State<LoginForm> {
 
   bool _isEmailFocused = false;
   bool _isPasswordFocused = false;
-  bool _isFormFilled = false;
+  bool _isEmailFilled = false;
+  bool _isPasswordFilled = false;
+  bool _isLoading = false;
   bool passwordToggle = true;
 
   @override
@@ -77,6 +81,15 @@ class _LoginFormState extends State<LoginForm> {
                   focusNode: _inputEmailFocusNode,
                   keyboardType: TextInputType.emailAddress,
                   style: const TextStyle(color: COLOR_DARK_ALT),
+                  onChanged: (value) {
+                    value.isNotEmpty
+                        ? setState(() {
+                            _isEmailFilled = true;
+                          })
+                        : setState(() {
+                            _isEmailFilled = false;
+                          });
+                  },
                   decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.person_outline_sharp,
@@ -127,6 +140,15 @@ class _LoginFormState extends State<LoginForm> {
                   focusNode: _inputPasswordFocusNode,
                   style: const TextStyle(color: COLOR_DARK_ALT),
                   obscureText: passwordToggle,
+                  onChanged: (value) {
+                    value.isNotEmpty
+                        ? setState(() {
+                            _isPasswordFilled = true;
+                          })
+                        : setState(() {
+                            _isPasswordFilled = false;
+                          });
+                  },
                   decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.lock_outline_sharp,
@@ -187,41 +209,43 @@ class _LoginFormState extends State<LoginForm> {
             ),
             Align(
               alignment: Alignment.center,
-              child: ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    String? error = await LoginController.instance.login(
-                      loginController.email.text.trim(),
-                      loginController.password.text.trim(),
-                    );
+              child: _isLoading
+                  ? const CircularLoader()
+                  : ElevatedButton(
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          String? error = await LoginController.instance.login(
+                            loginController.email.text.trim(),
+                            loginController.password.text.trim(),
+                          );
+                          setState(() {
+                            _isLoading = false;
+                          });
 
-                    if (error != null) {
-                      Get.showSnackbar(
-                        GetSnackBar(
-                          backgroundColor: COLOR_DANGER,
-                          message: error.toString(),
-                          duration: const Duration(seconds: 3),
-                        ),
-                      );
-                    } else {
-                      Get.offAll(
-                        () => const HomeScreen(),
-                      );
-                    }
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  fixedSize: Size(size.width * 0.9, 55.0),
-                  elevation: 0,
-                  backgroundColor: _isFormFilled
-                      ? COLOR_PRIMARY
-                      : COLOR_SECONDARY.withOpacity(0.6),
-                ),
-                child: Text(
-                  "login".toUpperCase(),
-                  style: const TextStyle(fontSize: 20.0),
-                ),
-              ),
+                          if (error != null) {
+                            SnackbarAlert(
+                              isError: true,
+                              title: 'Error',
+                              message: error,
+                            ).show();
+                          }
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: Size(size.width * 0.9, 55.0),
+                        elevation: 0,
+                        backgroundColor: _isEmailFilled && _isPasswordFilled
+                            ? COLOR_PRIMARY
+                            : COLOR_SECONDARY.withOpacity(0.6),
+                      ),
+                      child: Text(
+                        "login".toUpperCase(),
+                        style: const TextStyle(fontSize: 20.0),
+                      ),
+                    ),
             ),
           ],
         ),

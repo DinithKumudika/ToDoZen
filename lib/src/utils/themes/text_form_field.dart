@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class TextFormFieldTheme {
-  TextFormFieldTheme._();
+class ToDoZenTextFormFieldTheme {
+  ToDoZenTextFormFieldTheme._();
 
   static InputDecorationTheme inputDecorationTheme =
       const InputDecorationTheme();

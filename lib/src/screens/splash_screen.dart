@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do_zen/src/constants/colors.dart';
 import 'package:to_do_zen/src/constants/images.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,8 +13,19 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  void _onTap(BuildContext context) {
-    Navigator.pushNamed(context, '/on_boarding');
+  Future _onTap(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? isViewed = prefs.getBool('isOnBoard');
+    
+    if (isViewed!) {
+      // ignore: use_build_context_synchronously
+      print(isViewed);
+      Navigator.pushReplacementNamed(context, '/welcome');
+    } else {
+      print(isViewed);
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacementNamed(context, '/on_boarding');
+    }
   }
 
   @override

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:to_do_zen/src/features/authentication/exceptions/auth_exception.dart';
 import 'package:to_do_zen/src/screens/welcome_screen.dart';
-
 
 class AuthRepository extends GetxController {
   static AuthRepository get instance => Get.find();
@@ -33,24 +33,24 @@ class AuthRepository extends GetxController {
         email: email,
         password: password,
       );
+      return null;
     } on FirebaseAuthException catch (e) {
-      switch (e.code) {
-        case 'user-not-found':
-          message = 'No user exists for that email';
-          break;
-        case 'wrong-password':
-          message = 'Invalid password';
-          break;
-        default:
-          message = 'Unknown error occurred';
-          break;
-      }
-      return message;
+      // switch (e.code) {
+      //   case 'user-not-found':
+      //     message = 'No user exists for that email';
+      //     break;
+      //   case 'wrong-password':
+      //     message = 'Invalid password';
+      //     break;
+      //   default:
+      //     message = 'Unknown error occurred';
+      //     break;
+      // }
+      print("error:" + e.code);
+      throw AuthException(e.code);
     } catch (_) {
-      message = 'Unknown error occurred';
-      return message;
+      throw AuthException('unknown-error');
     }
-    return null;
   }
 
   Future<void> logoutUser() async {
