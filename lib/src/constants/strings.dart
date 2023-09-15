@@ -12,6 +12,9 @@ const String welcomeTitle = "Welcome to ToDoZen";
 const String welcomeSubTitle =
     "Please login to your account or create new account to continue";
 
+const String emptyHomeTitle = "What do you think of doing today?";
+const String emptyHomeSubTitle = "Tap + to add your task";
+
 const String loginTitle = "Login";
 const String emailHintText = "Enter your email";
 const String passwordHintText = "Enter your password";

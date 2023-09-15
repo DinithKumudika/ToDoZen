@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:to_do_zen/src/constants/colors.dart';
 import 'package:to_do_zen/src/constants/strings.dart';
 import 'package:to_do_zen/src/features/authentication/controllers/login_controller.dart';
-import 'package:to_do_zen/src/screens/home_screen.dart';
+import 'package:to_do_zen/src/features/tasks/screens/home_screen.dart';
+import 'package:to_do_zen/src/widgets/app_form_field.dart';
 import 'package:to_do_zen/src/widgets/circular_loader.dart';
 import 'package:to_do_zen/src/widgets/snackbar_alert.dart';
 
