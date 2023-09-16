@@ -28,8 +28,17 @@ class DrawerMenu extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            accountName: Text(fullName),
-            accountEmail: Text(email),
+            accountName: Text(
+              fullName,
+              style: const TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            accountEmail: Text(
+              email,
+              style: const TextStyle(fontSize: 15.0),
+            ),
             currentAccountPicture: const CircleAvatar(
               backgroundColor: COLOR_LIGHT,
               foregroundImage: AssetImage(defaultAvatar),

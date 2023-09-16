@@ -78,7 +78,7 @@ class WelcomeScreen extends StatelessWidget {
                   height: size.height * 0.03,
                 ),
                 OutlinedButton(
-                  onPressed: () {},
+                  onPressed: ()=> Navigator.pushNamed(context, '/register'),
                   style: OutlinedButton.styleFrom(
                     fixedSize: Size(
                       size.width * 0.9,

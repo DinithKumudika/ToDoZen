@@ -35,7 +35,7 @@ class _LoginFormState extends State<LoginForm> {
       });
     });
 
-    _inputEmailFocusNode.addListener(() {
+    _inputPasswordFocusNode.addListener(() {
       setState(() {
         _isPasswordFocused = _inputPasswordFocusNode.hasFocus;
       });

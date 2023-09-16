@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:to_do_zen/src/constants/colors.dart';
 import 'package:to_do_zen/src/constants/strings.dart';
 import 'package:to_do_zen/src/features/authentication/screens/login/widgets/google_auth.dart';
-import 'package:to_do_zen/src/features/authentication/screens/login/widgets/login_form.dart';
-import 'package:to_do_zen/src/features/authentication/screens/login/widgets/login_header.dart';
+import 'package:to_do_zen/src/features/authentication/screens/register/widgets/register_form.dart';
+import 'package:to_do_zen/src/features/authentication/screens/register/widgets/register_header.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
     return Scaffold(
       // resizeToAvoidBottomInset: false,
       backgroundColor: COLOR_DARK,
@@ -27,7 +26,7 @@ class LoginScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const LoginForm(),
+                  const RegisterForm(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -60,7 +59,9 @@ class LoginScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const GoogleAuth(buttonText: googleLogin,),
+                      const GoogleAuth(
+                        buttonText: googleRegister,
+                      ),
                       SizedBox(
                         height: size.height * 0.02,
                       ),
@@ -75,13 +76,14 @@ class LoginScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    "Don't have an Account?",
+                    "Already have an Account?",
                     style: TextStyle(color: COLOR_GRAY, fontSize: 15.0),
                   ),
                   TextButton(
-                    onPressed: () => Navigator.pushReplacementNamed(context, '/register'),
+                    onPressed: () =>
+                        Navigator.pushReplacementNamed(context, '/login'),
                     child: const Text(
-                      "Register",
+                      "Login",
                       style: TextStyle(color: COLOR_PRIMARY, fontSize: 15.0),
                     ),
                   ),
@@ -91,11 +93,12 @@ class LoginScreen extends StatelessWidget {
             const Positioned(
               top: 40,
               left: 20,
-              child: LoginHeader(),
+              child: RegisterHeader(),
             ),
           ],
         ),
       ),
     );
+    ;
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_zen/src/features/authentication/screens/login/login_screen.dart';
+import 'package:to_do_zen/src/features/authentication/screens/register/register_screen.dart';
 import 'package:to_do_zen/src/features/core/screens/home/home_screen.dart';
 import 'package:to_do_zen/src/screens/on_boarding/on_boarding_screen.dart';
 import 'package:to_do_zen/src/screens/splash_screen.dart';
@@ -13,5 +14,6 @@ final Map<String, WidgetBuilder> routes = {
   '/': (context) => const SplashScreen(),
   '/on_boarding': (context) => const OnBoardingScreen(),
   '/welcome': (context) => const WelcomeScreen(),
-  '/login': (context) => const LoginScreen()
+  '/login': (context) => const LoginScreen(),
+  '/register': (context) => const RegisterScreen(),
 };
