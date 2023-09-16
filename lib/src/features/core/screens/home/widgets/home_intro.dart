@@ -15,12 +15,6 @@ class HomeIntro extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          ElevatedButton(
-            onPressed: () {
-              AuthRepository.instance.logoutUser();
-            },
-            child: const Text('Logout'),
-          ),
           SizedBox(
             height: size.height * 0.12,
           ),

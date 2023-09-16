@@ -33,6 +33,8 @@ class AuthRepository extends GetxController {
         email: email,
         password: password,
       );
+      print(currentUserEmail());
+      print(currentUserId());
       return null;
     } on FirebaseAuthException catch (e) {
       // switch (e.code) {
@@ -51,6 +53,14 @@ class AuthRepository extends GetxController {
     } catch (_) {
       throw AuthException('unknown-error');
     }
+  }
+
+  String? currentUserId() {
+    return firebaseUser.value?.uid;
+  }
+
+  String? currentUserEmail() {
+    return firebaseUser.value?.email;
   }
 
   Future<void> logoutUser() async {
