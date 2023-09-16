@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_zen/src/features/authentication/screens/login/login_screen.dart';
-import 'package:to_do_zen/src/features/tasks/screens/home_screen.dart';
+import 'package:to_do_zen/src/features/core/screens/home/home_screen.dart';
 import 'package:to_do_zen/src/screens/on_boarding/on_boarding_screen.dart';
 import 'package:to_do_zen/src/screens/splash_screen.dart';
 import 'package:to_do_zen/src/screens/welcome_screen.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_zen/src/constants/colors.dart';
 
-class AppFormField extends StatefulWidget {
+class TDZFormField extends StatefulWidget {
   final TextEditingController controller;
   final bool isTextObscure;
   final bool isFilled;
@@ -11,7 +11,7 @@ class AppFormField extends StatefulWidget {
   final Function? onIconClicked;
   final FormFieldValidator<String>? validate;
 
-  const AppFormField({
+  const TDZFormField({
     required this.controller,
     required this.isTextObscure,
     required this.isFilled,
@@ -24,10 +24,10 @@ class AppFormField extends StatefulWidget {
   });
 
   @override
-  State<AppFormField> createState() => _AppFormFieldState();
+  State<TDZFormField> createState() => _TDZFormFieldState();
 }
 
-class _AppFormFieldState extends State<AppFormField> {
+class _TDZFormFieldState extends State<TDZFormField> {
   final FocusNode _inputFocusNode = FocusNode();
   bool _obscureToggle = false;
   bool _isFocused = false;

@@ -7,7 +7,7 @@ class BottomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    
+
     return NavigationBarTheme(
       data: NavigationBarThemeData(
         indicatorColor: Colors.transparent,
@@ -19,19 +19,22 @@ class BottomNavigation extends StatelessWidget {
         ),
       ),
       child: Container(
+        clipBehavior: Clip.hardEdge,
         decoration: const BoxDecoration(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(24),
+          ),
           boxShadow: <BoxShadow>[
             BoxShadow(
               color: COLOR_GRAY,
-              blurRadius: 2,
+              blurRadius: 5,
             ),
           ],
         ),
         child: NavigationBar(
-          height: size.height * 0.08,
-          shadowColor: COLOR_DARK_ALT,
-          elevation: 10,
           backgroundColor: COLOR_LIGHT,
+          height: size.height * 0.08,
+          elevation: 2,
           destinations: [
             const NavigationDestination(
               icon: Icon(

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:to_do_zen/src/constants/colors.dart';
-import 'package:to_do_zen/src/constants/images.dart';
+import 'package:to_do_zen/src/features/authentication/models/user_model.dart';
+import 'package:to_do_zen/src/features/core/controllers/profile_controller.dart';
 import 'package:to_do_zen/src/features/tasks/screens/widgets/add_task.dart';
-import 'package:to_do_zen/src/repositories/auth_repository.dart';
-import 'package:to_do_zen/src/features/tasks/screens/widgets/home_intro.dart';
+import 'package:to_do_zen/src/features/core/screens/home/widgets/home_intro.dart';
 import 'package:to_do_zen/src/widgets/bottom_navigation.dart';
+import 'package:to_do_zen/src/widgets/drawer_menu.dart';
+import 'package:to_do_zen/src/widgets/tdz_app_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,19 +17,37 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String _fullName = "";
+  String _email = "";
+
+  @override
+  void initState() {
+    super.initState();
+    initUser();
+  }
+
+  initUser() async {
+    UserModel? data = await Get.put(ProfileController()).currentUserData();
+    setState(() {
+      _fullName = "${data!.firstName} ${data.lastName}";
+      _email = data.email;
+    });
+    print(_fullName);
+    print(_email);
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-        centerTitle: true,
-        backgroundColor: COLOR_PRIMARY,
-        leading: const Icon(Icons.dehaze_rounded),
-      ),
+      appBar: const TDZAppBar(),
       body: const SafeArea(
         child: HomeIntro(),
+      ),
+      drawer: DrawerMenu(
+        fullName: _fullName,
+        email: _email,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => showModalBottomSheet(
@@ -37,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           enableDrag: false,
           context: context,
-          builder: (context){
+          builder: (context) {
             return AddTask();
           },
         ),
