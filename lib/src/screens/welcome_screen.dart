@@ -71,7 +71,7 @@ class WelcomeScreen extends StatelessWidget {
             child: Column(
               children: [
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () => Navigator.pushNamed(context, '/home'),
                   style: ElevatedButton.styleFrom(
                     fixedSize: Size(
                       size.width * 0.9,
