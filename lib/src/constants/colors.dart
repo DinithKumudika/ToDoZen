@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const Color COLOR_DARK = Color.fromARGB(255, 0, 0, 0);
+const Color COLOR_DARK = Color.fromARGB(255, 42, 42, 42);
 const Color COLOR_DARK_ALT = Color.fromARGB(255, 44, 51, 51);
 const Color COLOR_LIGHT = Colors.white;
 const Color COLOR_PRIMARY = Color.fromARGB(255, 237, 120, 23);
@@ -12,3 +12,5 @@ const Color COLOR_TEXT_PRIMARY = Color.fromARGB(255, 44, 51, 51);
 const Color COLOR_GRAY = Color.fromARGB(255, 175, 175, 175);
 const Color COLOR_DANGER = Colors.red;
 const Color COLOR_SUCCESS = Colors.green;
+const Color COLOR_ALERT = Color.fromRGBO(255, 204, 2, 1);
+const Color COLOR_LIGHTGRAY = Color.fromARGB(255, 235, 235, 235);
