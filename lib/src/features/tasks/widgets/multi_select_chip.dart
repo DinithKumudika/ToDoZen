@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_zen/src/constants/colors.dart';
 
 class MultiSelectChip extends StatefulWidget {
+  final String priorityLevel;
+  final Color selectedColor;
+  final int index;
+  final int selectedIndex;
+  final Function(int) onChipSelected;
+
   const MultiSelectChip({
-    required this.challengeCategory,
     super.key,
-    required this.onSelectionChanged,
+    required this.priorityLevel,
+    required this.selectedColor,
+    required this.index,
+    required this.selectedIndex,
+    required this.onChipSelected,
   });
 
   @override
   State<MultiSelectChip> createState() {
     return _MultiSelectChipState();
   }
-
-  final String challengeCategory;
-  final ValueChanged<bool> onSelectionChanged; // New callback function
 }
 
 class _MultiSelectChipState extends State<MultiSelectChip> {
@@ -24,25 +31,24 @@ class _MultiSelectChipState extends State<MultiSelectChip> {
       padding: const EdgeInsets.fromLTRB(10.0, 0, 10.0, 0),
       child: ChoiceChip(
         label: Text(
-          widget.challengeCategory,
+          widget.priorityLevel,
           style: TextStyle(
-            color: isSelected
+            color: widget.index == widget.selectedIndex
                 ? Colors.white
-                : Colors.blue, // Set selected text color to white
+                : COLOR_GRAY,
           ),
         ),
-        selected: isSelected,
+        selected: widget.index == widget.selectedIndex,
         onSelected: (selected) {
           setState(() {
-            isSelected = selected;
-            widget.onSelectionChanged(selected); // Call callback function
+            widget.onChipSelected(widget.index);
           });
         },
-        selectedColor: Colors.blue,
-        backgroundColor: const Color.fromRGBO(229, 240, 255, 1),
+        selectedColor: widget.selectedColor,
+        backgroundColor: COLOR_LIGHTGRAY,
         shape: RoundedRectangleBorder(
           borderRadius:
-              BorderRadius.circular(8.0), // Adjust the border radius as needed
+              BorderRadius.circular(5.0), // Adjust the border radius as needed
         ),
       ),
     );
