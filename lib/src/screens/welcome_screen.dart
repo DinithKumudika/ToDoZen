@@ -54,24 +54,11 @@ class WelcomeScreen extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 50,
-            left: 20,
-            child: IconButton(
-              onPressed: () => Navigator.pushNamed(context, '/on_boarding'),
-              enableFeedback: false,
-              icon: const Icon(
-                Icons.arrow_back_ios,
-                color: COLOR_DARK_ALT,
-              ),
-              focusColor: null,
-            ),
-          ),
-          Positioned(
             bottom: 50.0,
             child: Column(
               children: [
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () => Navigator.pushNamed(context, '/home'),
                   style: ElevatedButton.styleFrom(
                     fixedSize: Size(
                       size.width * 0.9,
@@ -91,7 +78,7 @@ class WelcomeScreen extends StatelessWidget {
                   height: size.height * 0.03,
                 ),
                 OutlinedButton(
-                  onPressed: () {},
+                  onPressed: ()=> Navigator.pushNamed(context, '/register'),
                   style: OutlinedButton.styleFrom(
                     fixedSize: Size(
                       size.width * 0.9,
