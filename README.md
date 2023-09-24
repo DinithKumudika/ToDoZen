@@ -5,12 +5,12 @@ Your personal Task Manager.
 ## Screenshots
 <div>
   <span>
-    <image src="./screenshots/login.png" width="200" height = "400"/>
-    <image src="./screenshots/registration.png" width="200" height = "400"/>  
+    <image src="./screenshots/login.png" width="200" height = "450"/>
+    <image src="./screenshots/registration.png" width="200" height = "450"/>  
   </span>
   <span>
-    <image src="./screenshots/drawer.png" width="200" height = "400"/>
-    <image src="./screenshots/home.png" width="200" height = "400"/>
+    <image src="./screenshots/drawer.png" width="200" height = "450"/>
+    <image src="./screenshots/home.png" width="200" height = "450"/>
 </span>
 </div>
 <div></div>
