@@ -14,6 +14,10 @@ class TaskList extends StatelessWidget {
     final profileController = Get.put(ProfileController());
     String? uid = profileController.currentUid();
     taskListController.getTasksByUser(uid!);
-    return Container();
+    return ListView(
+      children: [
+        
+      ],
+    );
   }
 }

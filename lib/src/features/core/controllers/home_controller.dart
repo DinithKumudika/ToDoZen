@@ -32,5 +32,6 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     initUser();
+    super.onInit();
   }
 }

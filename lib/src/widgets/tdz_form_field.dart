@@ -7,7 +7,9 @@ class TDZFormField extends StatelessWidget {
   final bool isFocused;
   final String hintText;
   final IconData prefixIcon;
-  final bool? suffixIcon;
+  final bool? hasSuffix;
+  final IconData? suffixIcon;
+  final Color? suffixColor;
   final TextInputType keyboardType;
   final Function()? onIconClicked;
   final Function()? onTap;
@@ -21,7 +23,9 @@ class TDZFormField extends StatelessWidget {
     required this.isFocused,
     required this.hintText,
     required this.prefixIcon,
+    this.hasSuffix,
     this.suffixIcon,
+    this.suffixColor,
     this.onTap,
     this.onChanged,
     this.keyboardType = TextInputType.text,
@@ -32,7 +36,6 @@ class TDZFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return TextFormField(
       controller: controller,
       validator: validate,
@@ -62,12 +65,12 @@ class TDZFormField extends StatelessWidget {
             borderSide: const BorderSide(color: COLOR_PRIMARY),
             borderRadius: BorderRadius.circular(5),
           ),
-          suffixIcon: suffixIcon != null
+          suffixIcon: hasSuffix != null
               ? IconButton(
-                  icon: isTextObscure
-                      ? const Icon(Icons.visibility)
-                      : const Icon(Icons.visibility_off),
-                  color: Colors.grey.withOpacity(0.8),
+                  icon: Icon(
+                    suffixIcon,
+                    color: suffixColor,
+                  ),
                   onPressed: onIconClicked,
                 )
               : null,

@@ -19,6 +19,7 @@ class HomeScreen extends StatelessWidget {
     final _homeController = Get.put(HomeController());
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: const TDZAppBar(),
       body: Obx(
         () => SafeArea(
