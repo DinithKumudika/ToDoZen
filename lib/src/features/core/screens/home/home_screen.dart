@@ -1,53 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:to_do_zen/src/constants/colors.dart';
-import 'package:to_do_zen/src/features/authentication/models/user_model.dart';
-import 'package:to_do_zen/src/features/core/controllers/profile_controller.dart';
+import 'package:to_do_zen/src/features/core/controllers/home_controller.dart';
+import 'package:to_do_zen/src/features/tasks/screens/tasks_screen.dart';
 import 'package:to_do_zen/src/features/tasks/screens/widgets/add_task.dart';
 import 'package:to_do_zen/src/features/core/screens/home/widgets/home_intro.dart';
 import 'package:to_do_zen/src/widgets/bottom_navigation.dart';
-import 'package:to_do_zen/src/widgets/drawer_menu.dart';
+import 'package:to_do_zen/src/widgets/drawer/drawer_menu.dart';
 import 'package:to_do_zen/src/widgets/tdz_app_bar.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  String _fullName = "";
-  String _email = "";
-
-  @override
-  void initState() {
-    super.initState();
-    initUser();
-  }
-
-  initUser() async {
-    UserModel? data = await Get.put(ProfileController()).currentUserData();
-    setState(() {
-      _fullName = "${data!.firstName} ${data.lastName}";
-      _email = data.email;
-    });
-    print(_fullName);
-    print(_email);
-  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final _homeController = Get.put(HomeController());
 
     return Scaffold(
       appBar: const TDZAppBar(),
-      body: const SafeArea(
-        child: HomeIntro(),
+      body: Obx(
+        () => SafeArea(
+          child: _homeController.isLoading.value
+              ? const SpinKitThreeBounce(
+                  color: COLOR_PRIMARY,
+                  size: 40.0,
+                )
+              : _homeController.hasTasks.value
+                  ? const TasksScreen()
+                  : const HomeIntro(),
+        ),
       ),
-      drawer: DrawerMenu(
-        fullName: _fullName,
-        email: _email,
+      drawer: Obx(
+        () => DrawerMenu(
+          fullName: _homeController.fullName.value,
+          email: _homeController.email.value,
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => showModalBottomSheet(

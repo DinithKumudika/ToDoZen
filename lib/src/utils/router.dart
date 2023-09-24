@@ -13,6 +13,7 @@ class AppRouter {
     if (route != null) {
       return MaterialPageRoute(
         builder: (context) => route(context),
+        settings: settings
       );
     }
 

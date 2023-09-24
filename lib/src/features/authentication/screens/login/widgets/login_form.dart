@@ -6,53 +6,14 @@ import 'package:to_do_zen/src/features/authentication/controllers/login_controll
 import 'package:to_do_zen/src/widgets/circular_loader.dart';
 import 'package:to_do_zen/src/widgets/snackbar_alert.dart';
 
-class LoginForm extends StatefulWidget {
+class LoginForm extends StatelessWidget {
   const LoginForm({super.key});
-
-  @override
-  State<LoginForm> createState() => _LoginFormState();
-}
-
-class _LoginFormState extends State<LoginForm> {
-  final FocusNode _inputEmailFocusNode = FocusNode();
-  final FocusNode _inputPasswordFocusNode = FocusNode();
-
-  final _formKey = GlobalKey<FormState>();
-
-  bool _isEmailFocused = false;
-  bool _isPasswordFocused = false;
-  bool _isEmailFilled = false;
-  bool _isPasswordFilled = false;
-  bool _isLoading = false;
-  bool passwordToggle = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _inputEmailFocusNode.addListener(() {
-      setState(() {
-        _isEmailFocused = _inputEmailFocusNode.hasFocus;
-      });
-    });
-
-    _inputPasswordFocusNode.addListener(() {
-      setState(() {
-        _isPasswordFocused = _inputPasswordFocusNode.hasFocus;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _inputEmailFocusNode.dispose();
-    _inputPasswordFocusNode.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final loginController = Get.put(LoginController());
+    final _formKey = GlobalKey<FormState>();
 
     return Form(
       key: _formKey,
@@ -74,45 +35,46 @@ class _LoginFormState extends State<LoginForm> {
                 SizedBox(
                   height: size.height * 0.01,
                 ),
-                TextFormField(
-                  controller: loginController.email,
-                  validator: (value) => validateEmail(value),
-                  focusNode: _inputEmailFocusNode,
-                  keyboardType: TextInputType.emailAddress,
-                  style: const TextStyle(color: COLOR_DARK_ALT),
-                  onChanged: (value) {
-                    value.isNotEmpty
-                        ? setState(() {
-                            _isEmailFilled = true;
-                          })
-                        : setState(() {
-                            _isEmailFilled = false;
-                          });
-                  },
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.person_outline_sharp,
-                        color: _isEmailFocused
-                            ? COLOR_PRIMARY.withOpacity(0.6)
-                            : Colors.grey.withOpacity(0.8),
-                      ),
-                      hintText: emailHintText,
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
-                      hintStyle: TextStyle(
-                        color: _isEmailFocused
-                            ? COLOR_PRIMARY.withOpacity(0.6)
-                            : Colors.grey.withOpacity(0.8),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: COLOR_PRIMARY),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      filled: true,
-                      fillColor:
-                          _isEmailFocused ? Colors.transparent : COLOR_LIGHT),
+                Obx(
+                  () => TextFormField(
+                    controller: loginController.email,
+                    validator: (value) => validateEmail(value),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    keyboardType: TextInputType.emailAddress,
+                    style: const TextStyle(color: COLOR_DARK_ALT),
+                    onChanged: (value) {
+                      loginController.enableLogin();
+                    },
+                    onTap: () {
+                      loginController.isEmailFocused.value = true;
+                      loginController.isPasswordFocused.value = false;
+                    },
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.person_outline_sharp,
+                          color: loginController.isEmailFocused.value
+                              ? COLOR_PRIMARY.withOpacity(0.6)
+                              : Colors.grey.withOpacity(0.8),
+                        ),
+                        hintText: emailHintText,
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        hintStyle: TextStyle(
+                          color: loginController.isEmailFocused.value
+                              ? COLOR_PRIMARY.withOpacity(0.6)
+                              : Colors.grey.withOpacity(0.8),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: COLOR_PRIMARY),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        filled: true,
+                        fillColor: loginController.isEmailFocused.value
+                            ? Colors.transparent
+                            : COLOR_LIGHT),
+                  ),
                 ),
               ],
             ),
@@ -133,57 +95,55 @@ class _LoginFormState extends State<LoginForm> {
                 SizedBox(
                   height: size.height * 0.01,
                 ),
-                TextFormField(
-                  controller: loginController.password,
-                  validator: (value) => validatePassword(value),
-                  focusNode: _inputPasswordFocusNode,
-                  style: const TextStyle(color: COLOR_DARK_ALT),
-                  obscureText: passwordToggle,
-                  onChanged: (value) {
-                    value.isNotEmpty
-                        ? setState(() {
-                            _isPasswordFilled = true;
-                          })
-                        : setState(() {
-                            _isPasswordFilled = false;
-                          });
-                  },
-                  decoration: InputDecoration(
-                      prefixIcon: Icon(
-                        Icons.lock_outline_sharp,
-                        color: _isPasswordFocused
-                            ? COLOR_PRIMARY.withOpacity(0.6)
-                            : Colors.grey.withOpacity(0.8),
-                      ),
-                      hintText: passwordHintText,
-                      floatingLabelBehavior: FloatingLabelBehavior.never,
-                      hintStyle: TextStyle(
-                        color: _isPasswordFocused
-                            ? COLOR_PRIMARY.withOpacity(0.6)
-                            : Colors.grey.withOpacity(0.8),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(color: COLOR_PRIMARY),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      suffixIcon: IconButton(
-                        icon: passwordToggle
-                            ? const Icon(Icons.visibility)
-                            : const Icon(Icons.visibility_off),
-                        color: Colors.grey.withOpacity(0.8),
-                        onPressed: () {
-                          setState(() {
-                            passwordToggle = !passwordToggle;
-                          });
-                        },
-                      ),
-                      filled: true,
-                      fillColor: _isPasswordFocused
-                          ? Colors.transparent
-                          : COLOR_LIGHT),
+                Obx(
+                  () => TextFormField(
+                    controller: loginController.password,
+                    validator: (value) => validatePassword(value),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    style: const TextStyle(color: COLOR_DARK_ALT),
+                    obscureText: loginController.passwordToggle.value,
+                    onChanged: (value) {
+                      loginController.enableLogin();
+                    },
+                    onTap: () {
+                      loginController.isPasswordFocused.value = true;
+                      loginController.isEmailFocused.value = false;
+                    },
+                    decoration: InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.lock_outline_sharp,
+                          color: loginController.isPasswordFocused.value
+                              ? COLOR_PRIMARY.withOpacity(0.6)
+                              : Colors.grey.withOpacity(0.8),
+                        ),
+                        hintText: passwordHintText,
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        hintStyle: TextStyle(
+                          color: loginController.isPasswordFocused.value
+                              ? COLOR_PRIMARY.withOpacity(0.6)
+                              : Colors.grey.withOpacity(0.8),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: COLOR_PRIMARY),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: loginController.passwordToggle.value
+                              ? const Icon(Icons.visibility)
+                              : const Icon(Icons.visibility_off),
+                          color: Colors.grey.withOpacity(0.8),
+                          onPressed: () {
+                            loginController.togglePasswordVisibility();
+                          },
+                        ),
+                        filled: true,
+                        fillColor: loginController.isPasswordFocused.value
+                            ? Colors.transparent
+                            : COLOR_LIGHT),
+                  ),
                 ),
               ],
             ),
@@ -206,45 +166,46 @@ class _LoginFormState extends State<LoginForm> {
             const SizedBox(
               height: 30.0,
             ),
-            Align(
-              alignment: Alignment.center,
-              child: _isLoading
-                  ? const CircularLoader()
-                  : ElevatedButton(
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          setState(() {
-                            _isLoading = true;
-                          });
-                          String? error = await LoginController.instance.login(
-                            loginController.email.text.trim(),
-                            loginController.password.text.trim(),
-                          );
-                          setState(() {
-                            _isLoading = false;
-                          });
+            Obx(
+              () => Align(
+                alignment: Alignment.center,
+                child: loginController.isLoading.value
+                    ? const CircularLoader()
+                    : ElevatedButton(
+                        onPressed: loginController.isEnabled.value
+                            ? () async {
+                                if (_formKey.currentState!.validate()) {
+                                  loginController.isLoading.value = true;
+                                  String? error =
+                                      await LoginController.instance.login(
+                                    loginController.email.text.trim(),
+                                    loginController.password.text.trim(),
+                                  );
+                                  loginController.isLoading.value = false;
 
-                          if (error != null) {
-                            SnackbarAlert(
-                              isError: true,
-                              title: 'Error',
-                              message: error,
-                            ).show();
-                          }
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: Size(size.width * 0.9, 55.0),
-                        elevation: 0,
-                        backgroundColor: _isEmailFilled && _isPasswordFilled
-                            ? COLOR_PRIMARY
-                            : COLOR_SECONDARY.withOpacity(0.6),
+                                  if (error != null) {
+                                    SnackbarAlert(
+                                      isError: true,
+                                      title: 'Error',
+                                      message: error,
+                                    ).show();
+                                  }
+                                }
+                              }
+                            : null,
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: Size(size.width * 0.9, 55.0),
+                          elevation: 0,
+                          backgroundColor: loginController.isEnabled.value
+                              ? COLOR_PRIMARY
+                              : COLOR_SECONDARY.withOpacity(0.6),
+                        ),
+                        child: Text(
+                          "login".toUpperCase(),
+                          style: const TextStyle(fontSize: 20.0),
+                        ),
                       ),
-                      child: Text(
-                        "login".toUpperCase(),
-                        style: const TextStyle(fontSize: 20.0),
-                      ),
-                    ),
+              ),
             ),
           ],
         ),

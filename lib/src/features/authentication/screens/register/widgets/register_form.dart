@@ -1,81 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:to_do_zen/src/constants/colors.dart';
 import 'package:to_do_zen/src/constants/strings.dart';
 import 'package:to_do_zen/src/features/authentication/controllers/register_controller.dart';
+import 'package:to_do_zen/src/features/authentication/models/user_model.dart';
 import 'package:to_do_zen/src/widgets/circular_loader.dart';
 import 'package:to_do_zen/src/widgets/snackbar_alert.dart';
 
-class RegisterForm extends StatefulWidget {
+class RegisterForm extends StatelessWidget {
   const RegisterForm({super.key});
-
-  @override
-  State<RegisterForm> createState() => _RegisterFormState();
-}
-
-class _RegisterFormState extends State<RegisterForm> {
-  final FocusNode _inputNameFocusNode = FocusNode();
-  final FocusNode _inputEmailFocusNode = FocusNode();
-  final FocusNode _inputPasswordFocusNode = FocusNode();
-  final FocusNode _inputConfirmPasswordFocusNode = FocusNode();
-
-  final _formKey = GlobalKey<FormState>();
-
-  bool _isNameFocused = false;
-  bool _isEmailFocused = false;
-  bool _isPasswordFocused = false;
-  bool _isConfirmPasswordFocused = false;
-
-  bool _isNameFilled = false;
-  bool _isEmailFilled = false;
-  bool _isPasswordFilled = false;
-  bool _isConfirmPasswordFilled = false;
-
-  bool _isLoading = false;
-  bool _passwordToggle = true;
-  bool _confirmPasswordToggle = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _inputNameFocusNode.addListener(() {
-      setState(() {
-        _isNameFocused = _inputNameFocusNode.hasFocus;
-      });
-    });
-
-    _inputEmailFocusNode.addListener(() {
-      setState(() {
-        _isEmailFocused = _inputEmailFocusNode.hasFocus;
-      });
-    });
-
-    _inputPasswordFocusNode.addListener(() {
-      setState(() {
-        _isPasswordFocused = _inputPasswordFocusNode.hasFocus;
-      });
-    });
-
-    _inputConfirmPasswordFocusNode.addListener(() {
-      setState(() {
-        _isConfirmPasswordFocused = _inputConfirmPasswordFocusNode.hasFocus;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _inputNameFocusNode.dispose();
-    _inputEmailFocusNode.dispose();
-    _inputPasswordFocusNode.dispose();
-    _inputConfirmPasswordFocusNode.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final registerController = Get.put(RegisterController());
+    final _formKey = GlobalKey<FormState>();
+    String initialCountry = 'LK';
+    PhoneNumber number = PhoneNumber(isoCode: 'LK', dialCode: '+94');
+
     return Form(
       key: _formKey,
       child: Container(
@@ -83,112 +26,208 @@ class _RegisterFormState extends State<RegisterForm> {
         child: Column(
           children: [
             SingleChildScrollView(
-              child: SizedBox(
-                height: size.height * 0.3,
-                child: Column(
-                  children: [
-                    // name input field
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Name',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: COLOR_DARK_ALT,
-                            fontSize: 18.0,
-                          ),
-                        ),
-                        SizedBox(
-                          height: size.height * 0.01,
-                        ),
-                        TextFormField(
-                          controller: registerController.name,
-                          validator: (value) => validateName(value),
-                          focusNode: _inputNameFocusNode,
-                          keyboardType: TextInputType.text,
-                          style: const TextStyle(color: COLOR_DARK_ALT),
-                          onChanged: (value) {
-                            value.isNotEmpty
-                                ? setState(() {
-                                    _isNameFilled = true;
-                                  })
-                                : setState(() {
-                                    _isNameFilled = false;
-                                  });
-                          },
-                          decoration: InputDecoration(
-                              prefixIcon: Icon(
-                                Icons.person_outline_sharp,
-                                color: _isNameFocused
-                                    ? COLOR_PRIMARY.withOpacity(0.6)
-                                    : Colors.grey.withOpacity(0.8),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'First Name',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: COLOR_DARK_ALT,
+                                fontSize: 18.0,
                               ),
-                              hintText: nameHintText,
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
-                              hintStyle: TextStyle(
-                                color: _isNameFocused
-                                    ? COLOR_PRIMARY.withOpacity(0.6)
-                                    : Colors.grey.withOpacity(0.8),
+                            ),
+                            SizedBox(
+                              height: size.height * 0.01,
+                            ),
+                            Obx(
+                              () => TextFormField(
+                                controller: registerController.firstName,
+                                validator: (value) => validateFirstName(value),
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                keyboardType: TextInputType.text,
+                                style: const TextStyle(color: COLOR_DARK_ALT),
+                                onChanged: (value) {
+                                  registerController.enableRegistration();
+                                },
+                                onTap: () {
+                                  registerController.isFirstNameFocused.value =
+                                      true;
+                                  registerController.isLastNameFocused.value =
+                                      false;
+                                  registerController.isEmailFocused.value =
+                                      false;
+                                  registerController.isPhoneNoFocused.value =
+                                      false;
+                                  registerController.isPasswordFocused.value =
+                                      false;
+                                },
+                                decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.person_outline_sharp,
+                                      color: registerController
+                                              .isFirstNameFocused.value
+                                          ? COLOR_PRIMARY.withOpacity(0.6)
+                                          : Colors.grey.withOpacity(0.8),
+                                    ),
+                                    hintText: firstNameHintText,
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
+                                    hintStyle: TextStyle(
+                                      color: registerController
+                                              .isFirstNameFocused.value
+                                          ? COLOR_PRIMARY.withOpacity(0.6)
+                                          : Colors.grey.withOpacity(0.8),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: COLOR_PRIMARY),
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    filled: true,
+                                    fillColor: registerController
+                                            .isFirstNameFocused.value
+                                        ? Colors.transparent
+                                        : COLOR_LIGHT),
                               ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: size.width * 0.01,
+                      ),
+                      // email input field
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Last Name',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                color: COLOR_DARK_ALT,
+                                fontSize: 18.0,
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: COLOR_PRIMARY),
-                                borderRadius: BorderRadius.circular(5),
+                            ),
+                            SizedBox(
+                              height: size.height * 0.01,
+                            ),
+                            Obx(
+                              () => TextFormField(
+                                controller: registerController.lastName,
+                                validator: (value) => validateLastName(value),
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                keyboardType: TextInputType.text,
+                                style: const TextStyle(color: COLOR_DARK_ALT),
+                                onChanged: (value) {
+                                  registerController.enableRegistration();
+                                },
+                                onTap: () {
+                                  registerController.isFirstNameFocused.value =
+                                      false;
+                                  registerController.isLastNameFocused.value =
+                                      true;
+                                  registerController.isEmailFocused.value =
+                                      false;
+                                  registerController.isPhoneNoFocused.value =
+                                      false;
+                                  registerController.isPasswordFocused.value =
+                                      false;
+                                },
+                                decoration: InputDecoration(
+                                    prefixIcon: Icon(
+                                      Icons.person_outline_sharp,
+                                      color: registerController
+                                              .isLastNameFocused.value
+                                          ? COLOR_PRIMARY.withOpacity(0.6)
+                                          : Colors.grey.withOpacity(0.8),
+                                    ),
+                                    hintText: lastNameHintText,
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
+                                    hintStyle: TextStyle(
+                                      color: registerController
+                                              .isLastNameFocused.value
+                                          ? COLOR_PRIMARY.withOpacity(0.6)
+                                          : Colors.grey.withOpacity(0.8),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: COLOR_PRIMARY),
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    filled: true,
+                                    fillColor: registerController
+                                            .isLastNameFocused.value
+                                        ? Colors.transparent
+                                        : COLOR_LIGHT),
                               ),
-                              filled: true,
-                              fillColor: _isNameFocused
-                                  ? Colors.transparent
-                                  : COLOR_LIGHT),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: size.height * 0.01,
-                    ),
-                    // email input field
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Email',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: COLOR_DARK_ALT,
-                            fontSize: 18.0,
-                          ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: size.height * 0.01,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Email',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          color: COLOR_DARK_ALT,
+                          fontSize: 18.0,
                         ),
-                        SizedBox(
-                          height: size.height * 0.01,
-                        ),
-                        TextFormField(
+                      ),
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
+                      Obx(
+                        () => TextFormField(
                           controller: registerController.email,
                           validator: (value) => validateEmail(value),
-                          focusNode: _inputEmailFocusNode,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           keyboardType: TextInputType.emailAddress,
                           style: const TextStyle(color: COLOR_DARK_ALT),
                           onChanged: (value) {
-                            value.isNotEmpty
-                                ? setState(() {
-                                    _isEmailFilled = true;
-                                  })
-                                : setState(() {
-                                    _isEmailFilled = false;
-                                  });
+                            registerController.enableRegistration();
+                          },
+                          onTap: () {
+                            registerController.isFirstNameFocused.value = false;
+                            registerController.isLastNameFocused.value = false;
+                            registerController.isEmailFocused.value = true;
+                            registerController.isPhoneNoFocused.value = false;
+                            registerController.isPasswordFocused.value = false;
                           },
                           decoration: InputDecoration(
                               prefixIcon: Icon(
                                 Icons.person_outline_sharp,
-                                color: _isEmailFocused
+                                color: registerController.isEmailFocused.value
                                     ? COLOR_PRIMARY.withOpacity(0.6)
                                     : Colors.grey.withOpacity(0.8),
                               ),
                               hintText: emailHintText,
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
                               hintStyle: TextStyle(
-                                color: _isEmailFocused
+                                color: registerController.isEmailFocused.value
                                     ? COLOR_PRIMARY.withOpacity(0.6)
                                     : Colors.grey.withOpacity(0.8),
                               ),
@@ -196,215 +235,259 @@ class _RegisterFormState extends State<RegisterForm> {
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: COLOR_PRIMARY),
+                                borderSide:
+                                    const BorderSide(color: COLOR_PRIMARY),
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               filled: true,
-                              fillColor: _isEmailFocused
+                              fillColor: registerController.isEmailFocused.value
                                   ? Colors.transparent
                                   : COLOR_LIGHT),
                         ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: size.height * 0.01,
-                    ),
-                    // password input field
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Password',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: size.height * 0.01,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Phone No',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          color: COLOR_DARK_ALT,
+                          fontSize: 18.0,
+                        ),
+                      ),
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
+                      Obx(
+                        () => InternationalPhoneNumberInput(
+                          focusNode: registerController.phoneNoFocus,
+                          textFieldController: registerController.phoneNo,
+                          validator: (value) => validatePhoneNo(value),
+                          autoValidateMode: AutovalidateMode.onUserInteraction,
+                          keyboardType: const TextInputType.numberWithOptions(
+                              signed: true, decimal: true),
+                          textStyle: const TextStyle(
                             color: COLOR_DARK_ALT,
-                            fontSize: 18.0,
                           ),
+                          formatInput: true,
+                          initialValue: number,
+                          selectorConfig: const SelectorConfig(
+                            selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                          ),
+                          selectorTextStyle: const TextStyle(
+                            color: COLOR_PRIMARY,
+                          ),
+                          inputDecoration: InputDecoration(
+                            prefixIcon: Icon(
+                              Icons.call_outlined,
+                              color: registerController.isPhoneNoFocused.value
+                                  ? COLOR_PRIMARY.withOpacity(0.6)
+                                  : Colors.grey.withOpacity(0.8),
+                            ),
+                            hintText: phoneNoHintText,
+                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                            hintStyle: TextStyle(
+                              color: registerController.isPhoneNoFocused.value
+                                  ? COLOR_PRIMARY.withOpacity(0.6)
+                                  : Colors.grey.withOpacity(0.8),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  const BorderSide(color: COLOR_PRIMARY),
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            filled: true,
+                            fillColor: registerController.isPhoneNoFocused.value
+                                ? Colors.transparent
+                                : COLOR_LIGHT,
+                          ),
+                          onInputChanged: (PhoneNumber number) {
+                            registerController.isFirstNameFocused.value = false;
+                            registerController.isLastNameFocused.value = false;
+                            registerController.isEmailFocused.value = false;
+                            registerController.isPhoneNoFocused.value = true;
+                            registerController.isPasswordFocused.value = false;
+                            print("on changed: $number");
+                          },
+                          onSaved: (PhoneNumber number) {
+                            registerController.isFirstNameFocused.value = false;
+                            registerController.isLastNameFocused.value = false;
+                            registerController.isEmailFocused.value = false;
+                            registerController.isPhoneNoFocused.value = true;
+                            registerController.isPasswordFocused.value = false;
+                            print("on saved: $number");
+                          },
+                          onInputValidated: (bool value) {
+                            print(value);
+                          },
                         ),
-                        SizedBox(
-                          height: size.height * 0.01,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: size.height * 0.01,
+                  ),
+                  // password input field
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Password',
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          color: COLOR_DARK_ALT,
+                          fontSize: 18.0,
                         ),
-                        TextFormField(
+                      ),
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
+                      Obx(
+                        () => TextFormField(
                           controller: registerController.password,
                           validator: (value) => validatePassword(value),
-                          focusNode: _inputPasswordFocusNode,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
                           style: const TextStyle(color: COLOR_DARK_ALT),
-                          obscureText: _passwordToggle,
+                          obscureText: registerController.passwordToggle.value,
                           onChanged: (value) {
-                            value.isNotEmpty
-                                ? setState(() {
-                                    _isPasswordFilled = true;
-                                  })
-                                : setState(() {
-                                    _isPasswordFilled = false;
-                                  });
+                            registerController.enableRegistration();
+                          },
+                          onTap: () {
+                            registerController.isFirstNameFocused.value = false;
+                            registerController.isLastNameFocused.value = false;
+                            registerController.isEmailFocused.value = false;
+                            registerController.isPhoneNoFocused.value = false;
+                            registerController.isPasswordFocused.value = true;
                           },
                           decoration: InputDecoration(
                               prefixIcon: Icon(
                                 Icons.lock_outline_sharp,
-                                color: _isPasswordFocused
-                                    ? COLOR_PRIMARY.withOpacity(0.6)
-                                    : Colors.grey.withOpacity(0.8),
+                                color:
+                                    registerController.isPasswordFocused.value
+                                        ? COLOR_PRIMARY.withOpacity(0.6)
+                                        : Colors.grey.withOpacity(0.8),
                               ),
                               hintText: passwordHintText,
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
                               hintStyle: TextStyle(
-                                color: _isPasswordFocused
-                                    ? COLOR_PRIMARY.withOpacity(0.6)
-                                    : Colors.grey.withOpacity(0.8),
+                                color:
+                                    registerController.isPasswordFocused.value
+                                        ? COLOR_PRIMARY.withOpacity(0.6)
+                                        : Colors.grey.withOpacity(0.8),
                               ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: COLOR_PRIMARY),
+                                borderSide:
+                                    const BorderSide(color: COLOR_PRIMARY),
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               suffixIcon: IconButton(
-                                icon: _passwordToggle
+                                icon: registerController.passwordToggle.value
                                     ? const Icon(Icons.visibility)
                                     : const Icon(Icons.visibility_off),
                                 color: Colors.grey.withOpacity(0.8),
                                 onPressed: () {
-                                  setState(() {
-                                    _passwordToggle = !_passwordToggle;
-                                  });
+                                  registerController.togglePasswordVisibility();
                                 },
                               ),
                               filled: true,
-                              fillColor: _isPasswordFocused
-                                  ? Colors.transparent
-                                  : COLOR_LIGHT),
+                              fillColor:
+                                  registerController.isPasswordFocused.value
+                                      ? Colors.transparent
+                                      : COLOR_LIGHT),
                         ),
-                        SizedBox(
-                          height: size.height * 0.01,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    // confirm password input field
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Confirm Password',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                            color: COLOR_DARK_ALT,
-                            fontSize: 18.0,
-                          ),
-                        ),
-                        SizedBox(
-                          height: size.height * 0.01,
-                        ),
-                        TextFormField(
-                          controller: registerController.confirmPassword,
-                          validator: (value) => validateConfirmPassword(
-                            value,
-                            registerController.password.text,
-                          ),
-                          focusNode: _inputConfirmPasswordFocusNode,
-                          style: const TextStyle(color: COLOR_DARK_ALT),
-                          obscureText: _confirmPasswordToggle,
-                          onChanged: (value) {
-                            value.isNotEmpty
-                                ? setState(() {
-                                    _isConfirmPasswordFilled = true;
-                                  })
-                                : setState(() {
-                                    _isConfirmPasswordFilled = false;
-                                  });
-                          },
-                          decoration: InputDecoration(
-                              prefixIcon: Icon(
-                                Icons.lock_outline_sharp,
-                                color: _isPasswordFocused
-                                    ? COLOR_PRIMARY.withOpacity(0.6)
-                                    : Colors.grey.withOpacity(0.8),
-                              ),
-                              hintText: confirmPasswordHintText,
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
-                              hintStyle: TextStyle(
-                                color: _isPasswordFocused
-                                    ? COLOR_PRIMARY.withOpacity(0.6)
-                                    : Colors.grey.withOpacity(0.8),
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(color: COLOR_PRIMARY),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              suffixIcon: IconButton(
-                                icon: _passwordToggle
-                                    ? const Icon(Icons.visibility)
-                                    : const Icon(Icons.visibility_off),
-                                color: Colors.grey.withOpacity(0.8),
-                                onPressed: () {
-                                  setState(() {
-                                    _passwordToggle = !_passwordToggle;
-                                  });
-                                },
-                              ),
-                              filled: true,
-                              fillColor: _isPasswordFocused
-                                  ? Colors.transparent
-                                  : COLOR_LIGHT),
-                        ),
-                        SizedBox(
-                          height: size.height * 0.01,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-            const SizedBox(
-              height: 30.0,
+            SizedBox(
+              height: size.height * 0.01,
             ),
-            Align(
-              alignment: Alignment.center,
-              child: _isLoading
-                  ? const CircularLoader()
-                  : ElevatedButton(
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          setState(() {
-                            _isLoading = true;
-                          });
-                          String? error = await registerController.register(
-                            registerController.email.text.trim(),
-                            registerController.password.text.trim(),
-                          );
-                          setState(() {
-                            _isLoading = false;
-                          });
+            Obx(
+              () => Align(
+                alignment: Alignment.center,
+                child: registerController.isLoading.value
+                    ? const CircularLoader()
+                    : ElevatedButton(
+                        onPressed: registerController.isEnabled.value
+                            ? () async {
+                                print(
+                                    "${number.dialCode!} ${registerController.phoneNo.text.trim()}");
 
-                          if (error != null) {
-                            SnackbarAlert(
-                              isError: true,
-                              title: 'Error',
-                              message: error,
-                            ).show();
-                          }
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: Size(size.width * 0.9, 55.0),
-                        elevation: 0,
-                        backgroundColor: _isEmailFilled && _isPasswordFilled
-                            ? COLOR_PRIMARY
-                            : COLOR_SECONDARY.withOpacity(0.6),
+                                if (_formKey.currentState!.validate()) {
+                                  registerController.isLoading.value = true;
+
+                                  final user = UserModel(
+                                      email:
+                                          registerController.email.text.trim(),
+                                      firstName: registerController
+                                          .firstName.text
+                                          .trim(),
+                                      lastName: registerController.lastName.text
+                                          .trim(),
+                                      phoneNo:
+                                          "${number.dialCode!} ${registerController.phoneNo.text.trim()}");
+
+                                  String? error =
+                                      await registerController.register(
+                                    user,
+                                    registerController.password.text.trim(),
+                                  );
+
+                                  if (error != null) {
+                                    registerController.isLoading.value = false;
+                                    SnackbarAlert(
+                                      isError: true,
+                                      title: 'Error',
+                                      message: error,
+                                    ).show();
+                                  } else {
+                                    registerController.isLoading.value = false;
+                                    const SnackbarAlert(
+                                      isError: false,
+                                      title: 'Success',
+                                      message: 'Registration Successful!',
+                                    ).show();
+                                    // ignore: use_build_context_synchronously
+                                    Navigator.pushNamedAndRemoveUntil(
+                                      context,
+                                      '/login',
+                                      (route) => false,
+                                    );
+                                  }
+                                }
+                              }
+                            : null,
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: Size(size.width * 0.9, 55.0),
+                          elevation: 0,
+                          backgroundColor: registerController.isEnabled.value
+                              ? COLOR_PRIMARY
+                              : COLOR_SECONDARY.withOpacity(0.6),
+                        ),
+                        child: Text(
+                          "register".toUpperCase(),
+                          style: const TextStyle(fontSize: 20.0),
+                        ),
                       ),
-                      child: Text(
-                        "register".toUpperCase(),
-                        style: const TextStyle(fontSize: 20.0),
-                      ),
-                    ),
+              ),
             ),
           ],
         ),
@@ -413,16 +496,14 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 }
 
-String? validateConfirmPassword(String? password, String? confirmPassword) {
-  if (confirmPassword!.isEmpty) {
-    return "Retype your password";
-  } else if (password != confirmPassword) {
-    return "Check the password again";
+String? validateFirstName(String? name) {
+  if (name!.isEmpty) {
+    return "First name is required";
   }
   return null;
 }
 
-String? validateName(String? name) {
+String? validateLastName(String? name) {
   if (name!.isEmpty) {
     return "First name is required";
   }
@@ -439,6 +520,15 @@ String? validateEmail(String? email) {
     return "email is required";
   } else if (!regExp.hasMatch(email)) {
     return "invalid email";
+  }
+  return null;
+}
+
+String? validatePhoneNo(String? value) {
+  if (value!.isEmpty) {
+    return "phone no is required";
+  } else if (value.trim().length != 11) {
+    return "invalid phone no";
   }
   return null;
 }

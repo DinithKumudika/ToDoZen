@@ -14,7 +14,7 @@ class UserModel {
       required this.lastName,
       required this.phoneNo});
 
-  toJson() {
+  Map<String, Object?> toJson() {
     return {
       "FirstName": firstName,
       "LastName": lastName,
@@ -30,10 +30,10 @@ class UserModel {
 
     return UserModel(
       id: document.id,
-      email: data!["Email"],
-      firstName: data["FirstName"],
-      lastName: data["LastName"],
-      phoneNo: data["PhoneNo"],
+      email: data!["Email"] as String,
+      firstName: data["FirstName"] as String,
+      lastName: data["LastName"] as String,
+      phoneNo: data["PhoneNo"] as String,
     );
   }
 }

@@ -26,6 +26,7 @@ class RegisterScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  SizedBox(height: size.height * 0.05,),
                   const RegisterForm(),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -91,7 +92,7 @@ class RegisterScreen extends StatelessWidget {
               ),
             ),
             const Positioned(
-              top: 40,
+              top: 30,
               left: 20,
               child: RegisterHeader(),
             ),
