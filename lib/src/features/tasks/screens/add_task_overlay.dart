@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:to_do_zen/src/constants/colors.dart';
 import 'package:to_do_zen/src/constants/strings.dart';
 import 'package:to_do_zen/src/features/tasks/widgets/multi_select_chip.dart';
+import 'package:to_do_zen/src/screens/task_list.dart';
 
 class AddTaskOverlay extends StatefulWidget {
   const AddTaskOverlay({super.key});
@@ -170,7 +171,12 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
                             ),
                           ),
                         ),
-                        onPressed: null,
+                        onPressed: () {
+                          //navigate to task list screen
+
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const TaskList()));
+                        },
                         child: const Text(
                           'Save Task',
                           style: TextStyle(
