@@ -10,6 +10,7 @@ class LoginController extends GetxController {
   final RxBool isEmailFocused = false.obs;
   final RxBool isPasswordFocused = false.obs;
   final RxBool isLoading = false.obs;
+  final RxBool isGoogleLoading = false.obs;
   final RxBool passwordToggle = true.obs;
   final RxBool isEnabled = false.obs;
   final RxBool isRegistered = false.obs;
@@ -44,10 +45,28 @@ class LoginController extends GetxController {
       Get.offAll(
         () => const HomeScreen(),
       );
-    } on AuthException catch (e) {
+    } 
+    on AuthException catch (e) {
       print("AuthException: ${e.message}");
       return e.loginException();
-    } catch (e) {
+    } 
+    catch (e) {
+      print("Unexpected error: $e");
+    }
+    return null;
+  }
+
+  Future<String?> googleSignIn() async {
+    try {
+      isGoogleLoading.value = true;
+      await AuthRepository.instance.signInWithGoogle();
+      isGoogleLoading.value = false;
+    } 
+    on AuthException catch (e) {
+      print("AuthException: ${e.message}");
+      return e.loginException();
+    } 
+    catch (e) {
       print("Unexpected error: $e");
     }
     return null;
