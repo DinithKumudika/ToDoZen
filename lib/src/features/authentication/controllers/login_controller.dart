@@ -37,6 +37,13 @@ class LoginController extends GetxController {
     password.clear();
   }
 
+  @override
+  void dispose() {
+    email.dispose();
+    password.dispose();
+    super.dispose();
+  }
+
   Future<String?> login(String emailValue, String passwordValue) async {
     try {
       await AuthRepository.instance
@@ -45,12 +52,10 @@ class LoginController extends GetxController {
       Get.offAll(
         () => const HomeScreen(),
       );
-    } 
-    on AuthException catch (e) {
+    } on AuthException catch (e) {
       print("AuthException: ${e.message}");
       return e.loginException();
-    } 
-    catch (e) {
+    } catch (e) {
       print("Unexpected error: $e");
     }
     return null;
@@ -61,12 +66,10 @@ class LoginController extends GetxController {
       isGoogleLoading.value = true;
       await AuthRepository.instance.signInWithGoogle();
       isGoogleLoading.value = false;
-    } 
-    on AuthException catch (e) {
+    } on AuthException catch (e) {
       print("AuthException: ${e.message}");
       return e.loginException();
-    } 
-    catch (e) {
+    } catch (e) {
       print("Unexpected error: $e");
     }
     return null;
