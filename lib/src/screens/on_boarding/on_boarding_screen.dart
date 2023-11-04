@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do_zen/src/constants/colors.dart';
 import 'package:to_do_zen/src/constants/images.dart';
 import 'package:to_do_zen/src/constants/strings.dart';
@@ -18,6 +19,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   final controller = LiquidController();
   int _currentPageIndex = 0;
   bool _onLastPage = false;
+
+  _setOnboardingStatus() async {
+    bool isViewed = true;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool("isOnBoard", isViewed);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,21 +78,25 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             top: 50,
             left: 20,
             child: SkipButton(
-              onPressed: () => controller.jumpToPage(page: 2),
+              onPressed: () {
+                _setOnboardingStatus();
+                Navigator.pushReplacementNamed(context, '/welcome');
+              },
             ),
           ),
           Positioned(
             bottom: 40,
             child: _onLastPage
                 ? ElevatedButton(
-                    onPressed: () => Navigator.pushNamed(context, '/welcome'),
+                    onPressed: () {
+                      _setOnboardingStatus();
+                      Navigator.pushReplacementNamed(context, '/welcome');
+                    },
                     autofocus: true,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: COLOR_PRIMARY,
                       padding: const EdgeInsets.symmetric(
-                        vertical: 10.0,
-                        horizontal: 20.0
-                      ),
+                          vertical: 10.0, horizontal: 20.0),
                     ),
                     child: const Text(
                       "Get Started",
