@@ -4,23 +4,35 @@ class TaskModel {
   final String? id;
   final String uid;
   final String title;
+  final int priority;
+  final String label;
   final String description;
-  final Timestamp dueAt;
+  final String status;
+  final Timestamp startDate;
+  final Timestamp endDate;
 
   TaskModel({
     this.id,
     required this.uid,
     required this.title,
+    required this.priority,
     required this.description,
-    required this.dueAt,
+    required this.label,
+    required this.status,
+    required this.startDate,
+    required this.endDate,
   });
 
   toJson() {
     return {
       "Uid": uid,
-      "title": title,
-      "description": description,
-      "dueAt": dueAt,
+      "Title": title,
+      "Description": description,
+      "Priority": priority,
+      "Label": label,
+      "Status": status,
+      "StartAt": startDate,
+      "EndAt": endDate,
     };
   }
 
@@ -32,7 +44,11 @@ class TaskModel {
         id: document.id,
         uid: data!['Uid'],
         title: data['Title'],
+        priority: data['Priority'],
+        label: data['Label'],
+        status: data['Status'],
         description: data['Description'],
-        dueAt: data['DueAt']);
+        startDate: data['StartAt'],
+        endDate: data['EndAt']);
   }
 }

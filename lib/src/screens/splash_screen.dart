@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
     }
 
     if (isNotificationsAllowed! == false) {
-      Get.put(TaskNotificationController()).initNotification();
+      await Get.put(TaskNotificationController()).initNotification();
       prefs.setBool('isNotificationsAllowed', true);
     }
   }

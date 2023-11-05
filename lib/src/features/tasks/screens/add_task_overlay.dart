@@ -1,14 +1,18 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:to_do_zen/src/constants/colors.dart';
 import 'package:intl/intl.dart'; // Import the intl package
 
 import 'package:to_do_zen/src/constants/strings.dart';
+import 'package:to_do_zen/src/features/tasks/controllers/task_controller.dart';
+import 'package:to_do_zen/src/features/tasks/models/task_model.dart';
 import 'package:to_do_zen/src/features/tasks/widgets/label_sheet.dart';
 import 'package:to_do_zen/src/features/tasks/widgets/multi_select_chip.dart';
 import 'package:to_do_zen/src/features/tasks/widgets/attachment_sheet.dart';
 import 'package:to_do_zen/src/features/tasks/widgets/calendar_sheet.dart';
-import 'package:to_do_zen/src/screens/task_list.dart';
+import 'package:to_do_zen/src/repositories/auth_repository.dart';
 
 class AddTaskOverlay extends StatefulWidget {
   const AddTaskOverlay({super.key});
@@ -26,6 +30,9 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
   String? selectedLabel;
   final taskNameController = TextEditingController();
   final taskDescriptionController = TextEditingController();
+
+  final taskController = Get.put(TaskController());
+  
 
   // Handling Image Selection
   void handleImageSelected(bool value) {
@@ -105,7 +112,7 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
   }
 
   // Save Task Submit
-  void saveTask() {
+  void saveTask() async {
     final taskName = taskNameController.text;
     final taskDescription = taskDescriptionController.text;
     // Check for text values
@@ -126,6 +133,17 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
       // Save Task LOGIC
+      TaskModel newTask = TaskModel(
+        uid: AuthRepository.instance.currentUserId()!,
+        title: taskName,
+        priority: selectedPriority,
+        description: taskDescription,
+        label: selectedLabel!,
+        status: 'Pending',
+        startDate: Timestamp.fromDate(DateTime.parse(startDate)),
+        endDate: Timestamp.fromDate(DateTime.parse(endDate)),
+      );
+      String? taskId = await taskController.add(newTask);
     }
   }
 
