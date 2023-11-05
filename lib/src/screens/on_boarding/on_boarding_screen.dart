@@ -23,7 +23,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   _setOnboardingStatus() async {
     bool isViewed = true;
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool("isOnBoard", isViewed);
+    await prefs.setBool('isOnBoard', isViewed);
   }
 
   @override

@@ -27,21 +27,23 @@ class _SplashScreenState extends State<SplashScreen> {
     bool? isViewed = false;
     bool? isNotificationsAllowed = prefs.getBool('isNotificationsAllowed');
     print("The value of isViewed is: $isViewed");
-    
-    if (isViewed!) {
-      // ignore: use_build_context_synchronously
+
+    if (isViewed != null && isViewed == true) {
       print(isViewed);
+      print("Inside Welcome");
       Navigator.pushReplacementNamed(context, '/welcome');
-    } else {
+    } 
+    else {
       print(isViewed);
-      // ignore: use_build_context_synchronously
+      print("Inside onboarding");
       Navigator.pushReplacementNamed(context, '/on_boarding');
+      print("something went wrong");
     }
 
-    if (isNotificationsAllowed! == false) {
-      Get.put(TaskNotificationController()).initNotification();
-      prefs.setBool('isNotificationsAllowed', true);
-    }
+    // if (isNotificationsAllowed! == false) {
+    //   Get.put(TaskNotificationController()).initNotification();
+    //   prefs.setBool('isNotificationsAllowed', true);
+    // }
   }
 
   Future _initServices() async {

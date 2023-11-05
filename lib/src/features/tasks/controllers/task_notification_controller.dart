@@ -26,8 +26,8 @@ class TaskNotificationController extends GetxController {
     await _firebaseMessaging.requestPermission();
 
     // Fetch FCM token for the device
-    final token = await _firebaseMessaging.getToken();
-    print('Token: $token');
+    final fcmToken = await _firebaseMessaging.getToken();
+    print('Token: $fcmToken');
 
     // initialize settings for push notifications
     initPushNotifications();
