@@ -1,18 +1,46 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do_zen/src/constants/colors.dart';
 import 'package:to_do_zen/src/features/tasks/controllers/task_list_controller.dart';
+import 'package:to_do_zen/src/features/tasks/screens/test.dart';
 import 'package:to_do_zen/src/features/tasks/screens/widgets/tabs_views/completed_tasks.dart';
 import 'package:to_do_zen/src/features/tasks/screens/widgets/task_search.dart';
 import 'package:to_do_zen/src/features/tasks/screens/widgets/tabs_views/upcoming_tasks.dart';
 
-class TasksScreen extends StatelessWidget {
+class TasksScreen extends StatefulWidget {
   const TasksScreen({super.key});
+
+  @override
+  State<TasksScreen> createState() => _TasksScreenState();
+}
+
+class _TasksScreenState extends State<TasksScreen> {
+  final taskListController = Get.put(TaskListController());
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchTaskList();
+  }
+
+  Future<void> _fetchTaskList() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    String? userId = user?.uid;
+    print(userId);
+
+    if (userId != null) {
+      final tasks = await taskListController.getTasksByUser(userId);
+      print(tasks);
+      if (tasks != null) {
+        taskListController.tasksList.assignAll(tasks);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final taskListController = Get.put(TaskListController());
 
     return Column(
       children: [
@@ -52,8 +80,8 @@ class TasksScreen extends StatelessWidget {
         Expanded(
           child: TabBarView(
             controller: taskListController.tabController,
-            children: const [
-              UpcomingTasks(),
+            children: [
+              TaskScreen(),
               CompletedTasks(),
             ],
           ),

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do_zen/src/features/authentication/exceptions/auth_exception.dart';
+import 'package:to_do_zen/src/features/tasks/screens/tasks_screen.dart';
+import 'package:to_do_zen/src/features/tasks/screens/test.dart';
+import 'package:to_do_zen/src/features/tasks/screens/widgets/task_list.dart';
 import 'package:to_do_zen/src/repositories/auth_repository.dart';
 import 'package:to_do_zen/src/features/core/screens/home/home_screen.dart';
 
@@ -50,7 +53,7 @@ class LoginController extends GetxController {
           .loginWithEmailAndPassword(emailValue, passwordValue);
       clearAll();
       Get.offAll(
-        () => const HomeScreen(),
+        () =>  HomeScreen(),
       );
     } on AuthException catch (e) {
       print("AuthException: ${e.message}");
