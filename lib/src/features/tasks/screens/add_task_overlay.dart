@@ -4,6 +4,7 @@ import 'package:to_do_zen/src/constants/colors.dart';
 import 'package:intl/intl.dart'; // Import the intl package
 
 import 'package:to_do_zen/src/constants/strings.dart';
+import 'package:to_do_zen/src/features/tasks/widgets/label_sheet.dart';
 import 'package:to_do_zen/src/features/tasks/widgets/multi_select_chip.dart';
 import 'package:to_do_zen/src/features/tasks/widgets/attachment_sheet.dart';
 import 'package:to_do_zen/src/features/tasks/widgets/calendar_sheet.dart';
@@ -16,11 +17,14 @@ class AddTaskOverlay extends StatefulWidget {
 }
 
 class _AddTaskOverlayState extends State<AddTaskOverlay> {
-  int selectedIndex = -1; // Initialize with -1 to represent no selected chip
+  int selectedPriority = -1; // Initialize with -1 to represent no selected chip
   bool isImageSelected = false;
   File? selectedImage;
   String startDate = "-";
   String endDate = "-";
+  String selectedLabel = "";
+  final taskNameController = TextEditingController();
+  final taskDescriptionController = TextEditingController();
 
   // Handling Image Selection
   void handleImageSelected(bool value) {
@@ -36,7 +40,7 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
     });
   }
 
-  // Opening Attachment Sheet
+  // Attachment Sheet
   void openAttachementSheet() {
     showModalBottomSheet(
       shape: const RoundedRectangleBorder(
@@ -54,7 +58,6 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
     );
   }
 
-  // This function will be triggered when the floating button is pressed
   void _showDateRangePicker() async {
     final val = await showModalBottomSheet(
         shape: const RoundedRectangleBorder(
@@ -80,6 +83,35 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
     }
   }
 
+  // Label Sheet
+  void openLabelSheet() {
+    showModalBottomSheet(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(20),
+        ),
+      ),
+      enableDrag: false,
+      isScrollControlled: true,
+      context: context,
+      builder: (ctx) => LabelSheet(
+        onLabelSelected: (selectedLabelName) {
+          print(selectedLabelName);
+          selectedLabel = selectedLabelName;
+        },
+      ),
+    );
+  }
+
+  // Save Task Submit
+  void saveTask() {
+    // Check for text values
+    // Check for priority
+    // Check for label
+
+    // Save Task
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -100,21 +132,23 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
                     color: COLOR_DARK),
               ),
               const SizedBox(height: 15),
-              const TextField(
-                style: TextStyle(
+              TextField(
+                controller: taskNameController,
+                style: const TextStyle(
                   fontSize: 15,
                 ),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Task Name',
                   border: OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 15),
-              const TextField(
-                style: TextStyle(
+              TextField(
+                controller: taskDescriptionController,
+                style: const TextStyle(
                   fontSize: 15,
                 ),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Task Description',
                   border: OutlineInputBorder(),
                 ),
@@ -131,34 +165,34 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
                   const SizedBox(width: 5),
                   MultiSelectChip(
                     index: 1,
-                    selectedIndex: selectedIndex,
+                    selectedIndex: selectedPriority,
                     priorityLevel: 'Low',
                     selectedColor: COLOR_SUCCESS,
                     onChipSelected: (index) {
                       setState(() {
-                        selectedIndex = index;
+                        selectedPriority = index;
                       });
                     },
                   ),
                   MultiSelectChip(
                     index: 2,
-                    selectedIndex: selectedIndex,
+                    selectedIndex: selectedPriority,
                     priorityLevel: 'Medium',
                     selectedColor: COLOR_ALERT,
                     onChipSelected: (index) {
                       setState(() {
-                        selectedIndex = index;
+                        selectedPriority = index;
                       });
                     },
                   ),
                   MultiSelectChip(
                     index: 3,
-                    selectedIndex: selectedIndex,
+                    selectedIndex: selectedPriority,
                     priorityLevel: 'High',
                     selectedColor: COLOR_DANGER,
                     onChipSelected: (index) {
                       setState(() {
-                        selectedIndex = index;
+                        selectedPriority = index;
                       });
                     },
                   ),
@@ -247,9 +281,9 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
                       ),
                     ),
                     const SizedBox(width: 5),
-                    const IconButton(
-                      onPressed: null,
-                      icon: Icon(
+                    IconButton(
+                      onPressed: openLabelSheet,
+                      icon: const Icon(
                         Icons.flag_rounded,
                         size: 25,
                         color: COLOR_GRAY,
