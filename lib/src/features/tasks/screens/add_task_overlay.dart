@@ -105,7 +105,9 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
       builder: (ctx) => LabelSheet(
         onLabelSelected: (selectedLabelName) {
           print(selectedLabelName);
-          selectedLabel = selectedLabelName;
+          setState(() {
+            selectedLabel = selectedLabelName;
+          });
         },
       ),
     );
@@ -117,21 +119,28 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
     final taskDescription = taskDescriptionController.text;
     // Check for text values
     if (taskName.isEmpty || taskDescription.isEmpty) {
+      print('Task name and description are required.');
       const snackBar = SnackBar(
         content: Text('Task name and description are required.'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else if (selectedPriority == -1) {
+      print('Priority is required.');
+
       const snackBar = SnackBar(
         content: Text('Please select a priority level.'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else if (selectedLabel == null) {
+      print('Label is required.');
+
       const snackBar = SnackBar(
         content: Text('Please select a label.'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
+      print('Save');
+
       // Save Task LOGIC
       TaskModel newTask = TaskModel(
         uid: AuthRepository.instance.currentUserId()!,
@@ -151,11 +160,12 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    return Padding(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Padding(
         padding:
-            EdgeInsets.fromLTRB(width * 0.05, height * 0.05, width * 0.05, 0),
+            EdgeInsets.fromLTRB(width * 0.05, height * 0.08, width * 0.05, 0),
         child: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.7,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -236,8 +246,8 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
               SizedBox(height: height * 0.02),
               selectedImage != null
                   ? SizedBox(
-                      width: width * 0.3,
-                      height: height * 0.2,
+                      width: width * 0.4,
+                      height: height * 0.3,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(
                             10.0), // Adjust the value as needed
@@ -288,6 +298,25 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
                         ),
                       ),
                     ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 15),
+              Row(
+                children: [
+                  const Text(
+                    'Label:',
+                    style: TextStyle(
+                      fontSize: 15,
+                    ),
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    selectedLabel ?? 'No Label Selected',
+                    style: const TextStyle(
+                      fontSize: 15,
+                      color: COLOR_PRIMARY,
+                    ),
                   ),
                 ],
               ),
@@ -358,9 +387,12 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
                         ))
                   ],
                 ),
-              )
+              ),
+              SizedBox(height: height * 0.02),
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
