@@ -120,7 +120,7 @@ class ProfileScreen extends StatelessWidget {
                   labelText: 'Phone Number',
                 ),
                 controller:
-                    TextEditingController(text: _homeController.email.value),
+                    TextEditingController(text: _homeController.phoneNo.value),
               ),
               Expanded(child: SizedBox()),
               TextButton(
