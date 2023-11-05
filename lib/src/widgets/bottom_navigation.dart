@@ -33,10 +33,11 @@ class BottomNavigation extends StatelessWidget {
         ),
         child: NavigationBar(
           backgroundColor: COLOR_LIGHT,
-          height: size.height * 0.08,
+          height: size.height * 0.07,
           elevation: 2,
           destinations: [
-            const NavigationDestination(
+            const IconButton(
+              onPressed: null,
               icon: Icon(
                 Icons.home_outlined,
                 color: COLOR_PRIMARY,
@@ -45,9 +46,9 @@ class BottomNavigation extends StatelessWidget {
                 Icons.home_filled,
                 color: COLOR_PRIMARY,
               ),
-              label: 'Home',
             ),
-            const NavigationDestination(
+            const IconButton(
+              onPressed: null,
               icon: Icon(
                 Icons.calendar_month_outlined,
                 color: COLOR_PRIMARY,
@@ -56,12 +57,12 @@ class BottomNavigation extends StatelessWidget {
                 Icons.calendar_month,
                 color: COLOR_PRIMARY,
               ),
-              label: 'Calendar',
             ),
             SizedBox(
               width: size.width * 0.01,
             ),
-            const NavigationDestination(
+            const IconButton(
+              onPressed: null,
               icon: Icon(
                 Icons.watch_later_outlined,
                 color: COLOR_PRIMARY,
@@ -70,9 +71,9 @@ class BottomNavigation extends StatelessWidget {
                 Icons.watch_later,
                 color: COLOR_PRIMARY,
               ),
-              label: 'Home',
             ),
-            const NavigationDestination(
+            const IconButton(
+              onPressed: null,
               icon: Icon(
                 Icons.person_2_outlined,
                 color: COLOR_PRIMARY,
@@ -81,7 +82,6 @@ class BottomNavigation extends StatelessWidget {
                 Icons.person_2,
                 color: COLOR_PRIMARY,
               ),
-              label: 'Profile',
             ),
           ],
         ),

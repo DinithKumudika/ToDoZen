@@ -3,8 +3,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:to_do_zen/src/constants/colors.dart';
 import 'package:to_do_zen/src/features/core/controllers/home_controller.dart';
+import 'package:to_do_zen/src/features/tasks/screens/add_task_overlay.dart';
 import 'package:to_do_zen/src/features/tasks/screens/tasks_screen.dart';
-import 'package:to_do_zen/src/features/tasks/screens/widgets/add_task.dart';
 import 'package:to_do_zen/src/features/core/screens/home/widgets/home_intro.dart';
 import 'package:to_do_zen/src/widgets/bottom_navigation.dart';
 import 'package:to_do_zen/src/widgets/drawer/drawer_menu.dart';
@@ -49,7 +49,7 @@ class HomeScreen extends StatelessWidget {
           enableDrag: false,
           context: context,
           builder: (context) {
-            return AddTask();
+            return const AddTaskOverlay();
           },
         ),
         backgroundColor: COLOR_PRIMARY,
