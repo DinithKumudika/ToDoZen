@@ -28,15 +28,15 @@ class _SplashScreenState extends State<SplashScreen> {
     print("The value of isViewed is: $isViewed");
 
     if (isViewed != null && isViewed == true) {
-      // ignore: use_build_context_synchronously
       print(isViewed);
       print("Inside Welcome");
       Navigator.pushReplacementNamed(context, '/welcome');
-    } else {
+    } 
+    else {
       print(isViewed);
       print("Inside onboarding");
-      // ignore: use_build_context_synchronously
       Navigator.pushReplacementNamed(context, '/on_boarding');
+      print("something went wrong");
     }
 
     // if (isNotificationsAllowed! == false) {

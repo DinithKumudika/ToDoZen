@@ -8,6 +8,9 @@ class TaskListController extends GetxController
   final taskRepository = Get.put(TaskRepository());
   late final TabController tabController;
 
+  final String initialPriority = 'Low';
+  final String initialLabel = 'Personal';
+
   final List<Tab> taskTabs = [
     const Tab(
       text: 'Upcoming',
@@ -21,6 +24,14 @@ class TaskListController extends GetxController
   void onInit() {
     super.onInit();
     tabController = TabController(length: 2, vsync: this);
+  }
+
+  updatePriorityFilter(String newValue) {
+
+  }
+
+  updateLabelFilter(String newValue) {
+
   }
 
   Future<List<TaskModel>?> getTasksByUser(String uid) async {
