@@ -25,7 +25,7 @@ class _TDZAppBarState extends State<TDZAppBar> {
               onPressed: () {
                 Scaffold.of(context).openDrawer();
               },
-              icon: const Icon(Icons.menu),
+              icon: const Icon(Icons.sort_rounded),
             );
           },
         ),

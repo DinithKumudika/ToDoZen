@@ -11,24 +11,23 @@ class HomeIntro extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     
-    return Center(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: size.height * 0.12,
-          ),
-          Image.asset(
-            home,
-            width: size.width * 0.8,
-          ),
-          SizedBox(
-            height: size.height * 0.06,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: size.height * 0.1,
+        ),
+        Image.asset(
+          home,
+          width: size.width * 0.7,
+        ),
+        SizedBox(
+          height: size.height * 0.06,
+        ),
+        Column(
+          children: [
+            const Center(
+              child: Text(
                 emptyHomeTitle,
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -37,20 +36,20 @@ class HomeIntro extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              SizedBox(
-                height: size.height * 0.02,
+            ),
+            SizedBox(
+              height: size.height * 0.02,
+            ),
+            const Text(
+              emptyHomeSubTitle,
+              style: TextStyle(
+                color: COLOR_DARK_ALT,
+                fontSize: 20.0,
               ),
-              const Text(
-                emptyHomeSubTitle,
-                style: TextStyle(
-                  color: COLOR_DARK_ALT,
-                  fontSize: 20.0,
-                ),
-              )
-            ],
-          ),
-        ],
-      ),
+            )
+          ],
+        ),
+      ],
     );
   }
 }

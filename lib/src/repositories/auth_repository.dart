@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:to_do_zen/src/features/authentication/exceptions/auth_exception.dart';
+import 'package:to_do_zen/src/features/authentication/screens/login/login_screen.dart';
 import 'package:to_do_zen/src/screens/welcome_screen.dart';
 
 class AuthRepository extends GetxController {
@@ -20,14 +21,29 @@ class AuthRepository extends GetxController {
 
   _setInitialScreen(User? user) {
     if (user == null) {
-      Get.offAll(() => const WelcomeScreen());
+      Get.offAll(() => const LoginScreen());
+    }
+  }
+
+  Future<String?> createUserWithEmailAndPassword(
+      String email, String password) async {
+    try {
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      return userCredential.user!.uid;
+    } on FirebaseAuthException catch (e) {
+      print("error:${e.code}");
+      throw AuthException(e.code);
+    } catch (_) {
+      throw AuthException('unknown-error');
     }
   }
 
   Future<String?> loginWithEmailAndPassword(
       String email, String password) async {
-    String? message;
-
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
@@ -37,18 +53,7 @@ class AuthRepository extends GetxController {
       print(currentUserId());
       return null;
     } on FirebaseAuthException catch (e) {
-      // switch (e.code) {
-      //   case 'user-not-found':
-      //     message = 'No user exists for that email';
-      //     break;
-      //   case 'wrong-password':
-      //     message = 'Invalid password';
-      //     break;
-      //   default:
-      //     message = 'Unknown error occurred';
-      //     break;
-      // }
-      print("error:" + e.code);
+      print("error:${e.code}");
       throw AuthException(e.code);
     } catch (_) {
       throw AuthException('unknown-error');

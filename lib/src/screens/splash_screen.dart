@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // bool? isViewed = prefs.getBool('isOnBoard');
 
-    bool isViewed = true;
+    bool? isViewed = prefs.getBool('isOnBoard');
     print("The value of isViewed is: $isViewed");
     
     if (isViewed!) {

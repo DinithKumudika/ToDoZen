@@ -1,0 +1,5 @@
+enum PriorityLevel {
+  PRIORITY_LOW,
+  PRIORITY_MEDIUM,
+  PPRIORITY_HIGH,
+}
