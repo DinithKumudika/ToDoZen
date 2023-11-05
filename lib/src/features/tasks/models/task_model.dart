@@ -16,7 +16,6 @@ class TaskModel {
     required this.uid,
     required this.title,
     required this.priority,
-    required this.priority,
     required this.description,
     required this.label,
     required this.status,
