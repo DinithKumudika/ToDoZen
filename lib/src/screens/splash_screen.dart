@@ -8,6 +8,7 @@ import 'package:to_do_zen/firebase_options.dart';
 
 import 'package:to_do_zen/src/constants/colors.dart';
 import 'package:to_do_zen/src/constants/images.dart';
+import 'package:to_do_zen/src/features/tasks/controllers/task_notification_controller.dart';
 import 'package:to_do_zen/src/repositories/auth_repository.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -22,20 +23,26 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future _onSavedPrefs(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    // bool? isViewed = prefs.getBool('isOnBoard');
-
     bool? isViewed = prefs.getBool('isOnBoard');
+    bool? isNotificationsAllowed = prefs.getBool('isNotificationsAllowed');
     print("The value of isViewed is: $isViewed");
-    
-    if (isViewed!) {
+
+    if (isViewed != null && isViewed == true) {
       // ignore: use_build_context_synchronously
       print(isViewed);
+      print("Inside Welcome");
       Navigator.pushReplacementNamed(context, '/welcome');
     } else {
       print(isViewed);
+      print("Inside onboarding");
       // ignore: use_build_context_synchronously
       Navigator.pushReplacementNamed(context, '/on_boarding');
     }
+
+    // if (isNotificationsAllowed! == false) {
+    //   Get.put(TaskNotificationController()).initNotification();
+    //   prefs.setBool('isNotificationsAllowed', true);
+    // }
   }
 
   Future _initServices() async {

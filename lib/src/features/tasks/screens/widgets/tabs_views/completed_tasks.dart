@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_zen/src/features/tasks/screens/widgets/task_card.dart';
 
 class CompletedTasks extends StatelessWidget {
   const CompletedTasks({super.key});
@@ -6,8 +7,26 @@ class CompletedTasks extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: const Center(
-        child: Text('Completed Tasks'),
+      child: const SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            TaskCard(
+              taskName: 'Task 1',
+              priorityLevel: 'High',
+            ),
+            TaskCard(
+              taskName: 'Task 2',
+              priorityLevel: 'Low',
+            ),
+            TaskCard(
+              taskName: 'Task 2',
+              priorityLevel: 'Medium',
+            ),
+          ],
+        ),
       ),
     );
   }

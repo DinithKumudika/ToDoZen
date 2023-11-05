@@ -72,8 +72,8 @@ class BottomNavigation extends StatelessWidget {
                 color: COLOR_PRIMARY,
               ),
             ),
-            const IconButton(
-              onPressed: null,
+            IconButton(
+              onPressed: () => Navigator.pushNamed(context, '/user_profile'),
               icon: Icon(
                 Icons.person_2_outlined,
                 color: COLOR_PRIMARY,
