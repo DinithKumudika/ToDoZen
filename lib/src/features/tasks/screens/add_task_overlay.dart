@@ -27,12 +27,12 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
   File? selectedImage;
   String startDate = "-";
   String endDate = "-";
+  String priorityName = "";
   String? selectedLabel;
   final taskNameController = TextEditingController();
   final taskDescriptionController = TextEditingController();
 
   final taskController = Get.put(TaskController());
-  
 
   // Handling Image Selection
   void handleImageSelected(bool value) {
@@ -145,7 +145,7 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
       TaskModel newTask = TaskModel(
         uid: AuthRepository.instance.currentUserId()!,
         title: taskName,
-        priority: selectedPriority,
+        priority: priorityName,
         description: taskDescription,
         label: selectedLabel!,
         status: 'Pending',
@@ -216,6 +216,7 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
                     onChipSelected: (index) {
                       setState(() {
                         selectedPriority = index;
+                        priorityName = 'Low';
                       });
                     },
                   ),
@@ -227,6 +228,7 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
                     onChipSelected: (index) {
                       setState(() {
                         selectedPriority = index;
+                        priorityName = 'Medium';
                       });
                     },
                   ),
@@ -238,6 +240,7 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
                     onChipSelected: (index) {
                       setState(() {
                         selectedPriority = index;
+                        priorityName = 'High';
                       });
                     },
                   ),
