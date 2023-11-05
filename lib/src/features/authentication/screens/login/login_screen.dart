@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:to_do_zen/src/constants/colors.dart';
 import 'package:to_do_zen/src/constants/strings.dart';
-import 'package:to_do_zen/src/features/authentication/controllers/login_controller.dart';
 import 'package:to_do_zen/src/features/authentication/screens/login/widgets/google_auth.dart';
 import 'package:to_do_zen/src/features/authentication/screens/login/widgets/login_form.dart';
 import 'package:to_do_zen/src/features/authentication/screens/login/widgets/login_header.dart';
-import 'package:to_do_zen/src/widgets/snackbar_alert.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({
