@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:to_do_zen/src/constants/colors.dart';
 import 'package:intl/intl.dart'; // Import the intl package
-
+import 'package:to_do_zen/src/widgets/bottom_navigation.dart';
 import 'package:to_do_zen/src/constants/strings.dart';
 import 'package:to_do_zen/src/features/tasks/controllers/task_controller.dart';
 import 'package:to_do_zen/src/features/tasks/models/task_model.dart';
@@ -13,6 +13,9 @@ import 'package:to_do_zen/src/features/tasks/widgets/multi_select_chip.dart';
 import 'package:to_do_zen/src/features/tasks/widgets/attachment_sheet.dart';
 import 'package:to_do_zen/src/features/tasks/widgets/calendar_sheet.dart';
 import 'package:to_do_zen/src/repositories/auth_repository.dart';
+import 'package:to_do_zen/src/widgets/drawer/drawer_menu.dart';
+import 'package:to_do_zen/src/widgets/tdz_app_bar.dart';
+import 'package:to_do_zen/src/features/core/controllers/home_controller.dart';
 
 class AddTaskOverlay extends StatefulWidget {
   const AddTaskOverlay({super.key});
@@ -160,8 +163,18 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final _homeController = Get.put(HomeController());
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      bottomNavigationBar: const BottomNavigation(),
+      drawer: Obx(
+        () => DrawerMenu(
+          fullName: _homeController.fullName.value,
+          email: _homeController.email.value,
+        ),
+      ),
+      
       body: Padding(
         padding:
             EdgeInsets.fromLTRB(width * 0.05, height * 0.08, width * 0.05, 0),
