@@ -25,6 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // bool? isViewed = prefs.getBool('isOnBoard');
 
     bool? isViewed = prefs.getBool('isOnBoard');
+    isViewed = true;
     print("The value of isViewed is: $isViewed");
     
     if (isViewed!) {

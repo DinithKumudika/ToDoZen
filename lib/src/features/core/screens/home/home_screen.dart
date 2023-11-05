@@ -40,18 +40,7 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => showModalBottomSheet(
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(20),
-            ),
-          ),
-          enableDrag: false,
-          context: context,
-          builder: (context) {
-            return const AddTaskOverlay();
-          },
-        ),
+        onPressed: () => Navigator.pushNamed(context, '/add_task'),
         backgroundColor: COLOR_PRIMARY,
         elevation: 0,
         child: const Icon(Icons.add),
