@@ -37,7 +37,7 @@ class CompletedTasks extends StatelessWidget {
                 taskName: tasks[index].title, // Use task data from the list
                 priorityLevel: tasks[index].priority == 1
                     ? "High"
-                    : "Low", // Use task data from the list
+                    : "Low", task: tasks[index], // Use task data from the list
               );
             },
           );

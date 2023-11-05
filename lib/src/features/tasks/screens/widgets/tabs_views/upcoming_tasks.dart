@@ -22,7 +22,7 @@ class UpcomingTasks extends StatelessWidget {
                 taskName: task.title, // Use task data from the list
                 priorityLevel: task.priority == 1
                     ? "high"
-                    : "low", // Use task data from the list
+                    : "low", task: task, // Use task data from the list
               ),
           ],
         ),

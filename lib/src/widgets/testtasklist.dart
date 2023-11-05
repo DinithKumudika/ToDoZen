@@ -35,7 +35,7 @@ class TestTaskList extends StatelessWidget {
 
               return TaskCard(
                 taskName: tasks[index].title, // Use task data from the list
-                priorityLevel: tasks[index].priority,
+                priorityLevel: tasks[index].priority, task: tasks[index],
               );
             },
           );
