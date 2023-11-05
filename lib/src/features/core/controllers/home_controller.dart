@@ -11,6 +11,7 @@ class HomeController extends GetxController {
 
   final RxString fullName = ''.obs;
   final RxString email = ''.obs;
+  final RxString phoneNo = ''.obs;
   final RxBool isLoading = true.obs;
   final RxBool hasTasks = false.obs;
 
@@ -18,10 +19,10 @@ class HomeController extends GetxController {
     UserModel? data = await _profileController.currentUserData();
     String? uid = _profileController.currentUid();
     int? taskCount = await _taskListController.getTasksCountByUser(uid!);
-    print("task count $taskCount");
 
     fullName.value = "${data!.firstName} ${data.lastName}";
     email.value = data.email;
+    phoneNo.value = data.phoneNo;
 
     if (taskCount != null && taskCount > 0) {
       hasTasks.value = true;
