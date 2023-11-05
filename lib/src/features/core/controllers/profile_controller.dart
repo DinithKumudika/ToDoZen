@@ -10,6 +10,11 @@ class ProfileController extends GetxController {
   final _authRepo = Get.put(AuthRepository());
   final _userRepo = Get.put(UserRepository());
 
+  String? currentUid(){
+    final currentUser = _authRepo.firebaseUser.value;
+    return currentUser!.uid;
+  }
+
   Future<UserModel?> currentUserData() async {
     final currentUser = _authRepo.firebaseUser.value;
     print("current user $currentUser");
@@ -23,7 +28,7 @@ class ProfileController extends GetxController {
         print(e.message);
       }
     } else {
-      
+      // users from google auth
     }
     return null;
   }

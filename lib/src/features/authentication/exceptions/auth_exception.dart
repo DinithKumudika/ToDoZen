@@ -1,34 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:to_do_zen/src/constants/colors.dart';
-import 'package:to_do_zen/src/widgets/snackbar_alert.dart';
-
-enum AuthError {
-  userNotFound,
-  invalidCredentials,
-  invalidPassword,
-  tooManyRequests,
-  unknownError
-}
-
-extension AuthErrorExtension on AuthError {
-  String get message {
-    switch (this) {
-      case AuthError.userNotFound:
-        return 'No user exists for that email';
-      case AuthError.invalidCredentials:
-        return 'Invalid email or password';
-      case AuthError.invalidPassword:
-        return 'Invalid password';
-      case AuthError.tooManyRequests:
-        return 'too many failed login attempts. Try again later';
-      case AuthError.unknownError:
-        return 'Unknown error occurred';
-      default:
-        return 'Unknown error occurred';
-    }
-  }
-}
+import 'package:to_do_zen/src/features/authentication/enums/login_error.dart';
+import 'package:to_do_zen/src/features/authentication/enums/registration_errror.dart';
 
 class AuthException implements Exception {
   final String message;
@@ -43,17 +14,38 @@ class AuthException implements Exception {
   // handle login related errors
   String? loginException() {
     if (message.contains('INVALID_LOGIN_CREDENTIALS')) {
-      return AuthError.invalidCredentials.message;
+      return LoginError.invalidCredentials.message;
     } else if (message.contains('user-not-found')) {
-      return AuthError.userNotFound.message;
+      return LoginError.userNotFound.message;
     } else if (message.contains('wrong-password')) {
-      return AuthError.invalidPassword.message;
+      return LoginError.invalidPassword.message;
     } else if (message.contains('too-many-requests')) {
-      return AuthError.tooManyRequests.message;
+      return LoginError.tooManyRequests.message;
     } else {
-      return AuthError.tooManyRequests.message;
+      return LoginError.unknownError.message;
     }
   }
 
-  void registerException() {}
+  String? registrationException() {
+    if (message.contains('weak-password')) {
+      return RegistrationError.weakPassword.message;
+    } else if (message.contains('email-already-in-use')) {
+      return RegistrationError.emailInUse.message;
+    }
+    else if (message.contains('invalid-email')) {
+      return RegistrationError.invalidEmail.message;
+    }
+    else if (message.contains('invalid-password')) {
+      return RegistrationError.invalidPassword.message;
+    }
+    else if (message.contains('operation-not-allowed')) {
+      return RegistrationError.notAllowed.message;
+    }   
+    else if (message.contains('too-many-requests')) {
+      return RegistrationError.tooManyRequests.message;
+    } 
+    else {
+      return RegistrationError.unknownError.message;
+    }
+  }
 }

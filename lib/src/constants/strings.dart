@@ -21,6 +21,7 @@ const String passwordHintText = "Enter your password";
 const String googleLogin = "Login with Google";
 
 const String registerTitle = "Register";
-const String nameHintText = "Enter your name";
-const String confirmPasswordHintText = "Confirm your password";
+const String firstNameHintText = "Enter your first name";
+const String lastNameHintText = "Enter your last name";
+const String phoneNoHintText = "Enter your phone no";
 const String googleRegister = "Register with Google";

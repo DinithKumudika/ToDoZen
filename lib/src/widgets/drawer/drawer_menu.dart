@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:to_do_zen/src/constants/colors.dart';
 import 'package:to_do_zen/src/constants/images.dart';
 import 'package:to_do_zen/src/repositories/auth_repository.dart';
+import 'package:to_do_zen/src/widgets/drawer/drawer_menu_body.dart';
 
 class DrawerMenu extends StatelessWidget {
   final String email;
@@ -44,20 +45,7 @@ class DrawerMenu extends StatelessWidget {
               foregroundImage: AssetImage(defaultAvatar),
             ),
           ),
-          ListTile(
-            leading: const Icon(
-              Icons.logout_rounded,
-              color: COLOR_PRIMARY,
-            ),
-            title: const Text(
-              'Sign Out',
-              style: TextStyle(
-                color: COLOR_DARK_ALT,
-                fontSize: 20.0,
-              ),
-            ),
-            onTap: () => AuthRepository.instance.logoutUser(),
-          ),
+          const DrawerMenuBody(),
         ],
       ),
     );

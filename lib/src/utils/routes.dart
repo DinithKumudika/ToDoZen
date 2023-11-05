@@ -14,6 +14,6 @@ final Map<String, WidgetBuilder> routes = {
   '/': (context) => const SplashScreen(),
   '/on_boarding': (context) => const OnBoardingScreen(),
   '/welcome': (context) => const WelcomeScreen(),
-  '/login': (context) => const LoginScreen(),
+  '/login': (context) => LoginScreen(),
   '/register': (context) => const RegisterScreen(),
 };

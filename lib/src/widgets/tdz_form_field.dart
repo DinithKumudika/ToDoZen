@@ -1,22 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_zen/src/constants/colors.dart';
 
-class TDZFormField extends StatefulWidget {
+class TDZFormField extends StatelessWidget {
   final TextEditingController controller;
   final bool isTextObscure;
-  final bool isFilled;
+  final bool isFocused;
   final String hintText;
   final IconData prefixIcon;
+  final bool? hasSuffix;
+  final IconData? suffixIcon;
+  final Color? suffixColor;
   final TextInputType keyboardType;
-  final Function? onIconClicked;
+  final Function()? onIconClicked;
+  final Function()? onTap;
+  final Function(String)? onChanged;
+
   final FormFieldValidator<String>? validate;
 
   const TDZFormField({
     required this.controller,
     required this.isTextObscure,
-    required this.isFilled,
+    required this.isFocused,
     required this.hintText,
     required this.prefixIcon,
+    this.hasSuffix,
+    this.suffixIcon,
+    this.suffixColor,
+    this.onTap,
+    this.onChanged,
     this.keyboardType = TextInputType.text,
     this.onIconClicked,
     this.validate,
@@ -24,54 +35,26 @@ class TDZFormField extends StatefulWidget {
   });
 
   @override
-  State<TDZFormField> createState() => _TDZFormFieldState();
-}
-
-class _TDZFormFieldState extends State<TDZFormField> {
-  final FocusNode _inputFocusNode = FocusNode();
-  bool _obscureToggle = false;
-  bool _isFocused = false;
-  bool _isNotEmpty = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _inputFocusNode.addListener(() {
-      setState(() {
-        _isFocused = _inputFocusNode.hasFocus;
-      });
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: widget.controller,
-      validator: widget.validate,
-      focusNode: _inputFocusNode,
+      controller: controller,
+      validator: validate,
       style: const TextStyle(color: COLOR_DARK_ALT),
-      onChanged: (value) {
-        value.isNotEmpty
-            ? setState(() {
-                _isNotEmpty = true;
-              })
-            : setState(() {
-                _isNotEmpty = false;
-              });
-      },
-      obscureText: widget.isTextObscure,
-      keyboardType: widget.keyboardType,
+      onChanged: onChanged,
+      onTap: onTap,
+      obscureText: isTextObscure,
+      keyboardType: keyboardType,
       decoration: InputDecoration(
           prefixIcon: Icon(
-            widget.prefixIcon,
-            color: _isFocused
+            prefixIcon,
+            color: isFocused
                 ? COLOR_PRIMARY.withOpacity(0.6)
                 : Colors.grey.withOpacity(0.8),
           ),
-          hintText: widget.hintText,
+          hintText: hintText,
           floatingLabelBehavior: FloatingLabelBehavior.never,
           hintStyle: TextStyle(
-            color: _isFocused
+            color: isFocused
                 ? COLOR_PRIMARY.withOpacity(0.6)
                 : Colors.grey.withOpacity(0.8),
           ),
@@ -82,21 +65,17 @@ class _TDZFormFieldState extends State<TDZFormField> {
             borderSide: const BorderSide(color: COLOR_PRIMARY),
             borderRadius: BorderRadius.circular(5),
           ),
-          suffixIcon: IconButton(
-            icon: widget.isTextObscure
-                ? const Icon(Icons.visibility)
-                : const Icon(Icons.visibility_off),
-            color: Colors.grey.withOpacity(0.8),
-            onPressed: () {
-              widget.isTextObscure
-                  ? setState(() {
-                      _obscureToggle = !_obscureToggle;
-                    })
-                  : null;
-            },
-          ),
+          suffixIcon: hasSuffix != null
+              ? IconButton(
+                  icon: Icon(
+                    suffixIcon,
+                    color: suffixColor,
+                  ),
+                  onPressed: onIconClicked,
+                )
+              : null,
           filled: true,
-          fillColor: _isFocused ? Colors.transparent : COLOR_LIGHT),
+          fillColor: isFocused ? Colors.transparent : COLOR_LIGHT),
     );
   }
 }
