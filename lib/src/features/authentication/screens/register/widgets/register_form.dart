@@ -28,6 +28,7 @@ class RegisterForm extends StatelessWidget {
             SingleChildScrollView(
               child: Column(
                 children: [
+                  SizedBox(height: 40),
                   Row(
                     children: [
                       Expanded(
