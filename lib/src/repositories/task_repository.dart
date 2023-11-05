@@ -36,4 +36,16 @@ class TaskRepository extends GetxController {
     } catch (_) {}
     return null;
   }
+
+  Future<void> add() async {
+
+  }
+
+  Future<void> getCompleted() async {
+
+  }
+
+  Future<void> getPending() async {
+    
+  }
 }

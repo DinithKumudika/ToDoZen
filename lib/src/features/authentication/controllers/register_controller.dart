@@ -58,12 +58,21 @@ class RegisterController extends GetxController {
         : isEnabled.value = false;
   }
 
+  @override
+  void dispose() {
+    firstName.dispose();
+    lastName.dispose();
+    email.dispose();
+    phoneNo.dispose();
+    password.dispose();
+    super.dispose();
+  }
+
   Future<String?> register(UserModel user, String password) async {
     try {
       String? uid = await AuthRepository.instance
           .createUserWithEmailAndPassword(user.email, password);
       await createUser(uid!, user);
-      
     } on AuthException catch (e) {
       print("AuthException: ${e.message}");
       return e.registrationException();
