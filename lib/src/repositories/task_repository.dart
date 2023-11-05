@@ -47,18 +47,36 @@ class TaskRepository extends GetxController {
       return docRef.id;
     } on FirebaseException catch (e) {
       print(e);
-    } catch (_) {
-
-    }
+    } catch (_) {}
 
     return null;
   }
 
-  Future<void> getCompleted() async {
-
+  Future<List<TaskModel>?> getCompleted() async {
+    List<TaskModel> completedTasks = [];
+    try {
+      QuerySnapshot qs =
+          await tasks.where("Status", isEqualTo: "Completed").get();
+      for (DocumentSnapshot taskDoc in qs.docs) {
+        completedTasks.add(TaskModel.fromSnapshot(
+            taskDoc as DocumentSnapshot<Map<String, dynamic>>));
+      }
+      return completedTasks;
+    } catch (e) {}
+    return null;
   }
 
-  Future<void> getPending() async {
-    
+  Future<List<TaskModel>?> getPending() async {
+    List<TaskModel> pendingTasks = [];
+    try {
+      QuerySnapshot qs =
+          await tasks.where("Status", isEqualTo: "Pending").get();
+      for (DocumentSnapshot taskDoc in qs.docs) {
+        pendingTasks.add(TaskModel.fromSnapshot(
+            taskDoc as DocumentSnapshot<Map<String, dynamic>>));
+      }
+      return pendingTasks;
+    } catch (e) {}
+    return null;
   }
 }
