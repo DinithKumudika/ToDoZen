@@ -23,7 +23,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future _onSavedPrefs(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? isViewed = prefs.getBool('isOnBoard');
+    //bool? isViewed = prefs.getBool('isOnBoard');
+    bool? isViewed = false;
     bool? isNotificationsAllowed = prefs.getBool('isNotificationsAllowed');
     print("The value of isViewed is: $isViewed");
     

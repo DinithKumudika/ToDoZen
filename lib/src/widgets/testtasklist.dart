@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:to_do_zen/src/features/tasks/screens/widgets/task_card.dart';
+import 'package:to_do_zen/src/features/authentication/models/user_model.dart';
 import 'package:to_do_zen/src/features/tasks/models/task_model.dart';
 import 'package:to_do_zen/src/features/tasks/screens/widgets/task_card.dart';
 import 'package:to_do_zen/src/repositories/task_repository.dart';
 
-class CompletedTasks extends StatelessWidget {
+class TestTaskList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
@@ -28,7 +28,7 @@ class CompletedTasks extends StatelessWidget {
           return ListView.builder(
             itemCount: tasks.length,
             itemBuilder: (context, index) {
-              if (tasks[index].status == 'Pending') {
+              if (tasks[index].status == 'Completed') {
                 // Task is completed, don't display it
                 return SizedBox.shrink();
               }

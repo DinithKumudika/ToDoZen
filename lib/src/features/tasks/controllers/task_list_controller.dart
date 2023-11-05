@@ -16,6 +16,9 @@ class TaskListController extends GetxController
       text: 'Completed',
     ),
   ];
+  // Define an observable list to store tasks
+  final RxList<TaskModel> tasksList = <TaskModel>[].obs;
+
 
   @override
   void onInit() {
