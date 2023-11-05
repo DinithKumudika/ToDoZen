@@ -8,6 +8,7 @@ import 'package:to_do_zen/firebase_options.dart';
 
 import 'package:to_do_zen/src/constants/colors.dart';
 import 'package:to_do_zen/src/constants/images.dart';
+import 'package:to_do_zen/src/features/tasks/controllers/task_notification_controller.dart';
 import 'package:to_do_zen/src/repositories/auth_repository.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -23,6 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Future _onSavedPrefs(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? isViewed = prefs.getBool('isOnBoard');
+    bool? isNotificationsAllowed = prefs.getBool('isNotificationsAllowed');
 
     if (isViewed!) {
       // ignore: use_build_context_synchronously
@@ -32,6 +34,11 @@ class _SplashScreenState extends State<SplashScreen> {
       print(isViewed);
       // ignore: use_build_context_synchronously
       Navigator.pushReplacementNamed(context, '/on_boarding');
+    }
+
+    if (isNotificationsAllowed! == false) {
+      Get.put(TaskNotificationController()).initNotification();
+      prefs.setBool('isNotificationsAllowed', true);
     }
   }
 
