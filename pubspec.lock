@@ -30,7 +30,6 @@ packages:
     description:
       name: archive
       sha256: "27b24c1b1ab091964e7c0079dcedc9a04d992089df724b9cea45fe6f82d48de1"
-      sha256: "27b24c1b1ab091964e7c0079dcedc9a04d992089df724b9cea45fe6f82d48de1"
       url: "https://pub.dev"
     source: hosted
     version: "3.4.7"

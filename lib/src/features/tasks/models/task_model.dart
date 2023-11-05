@@ -4,7 +4,7 @@ class TaskModel {
   final String? id;
   final String uid;
   final String title;
-  final int priority;
+  final String priority;
   final String label;
   final String description;
   final String status;
@@ -44,9 +44,6 @@ class TaskModel {
         id: document.id,
         uid: data!['Uid'],
         title: data['Title'],
-        priority: data['Priority'],
-        label: data['Label'],
-        status: data['Status'],
         priority: data['Priority'],
         label: data['Label'],
         status: data['Status'],
