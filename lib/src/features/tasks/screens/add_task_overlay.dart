@@ -23,7 +23,7 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
   File? selectedImage;
   String startDate = "-";
   String endDate = "-";
-  String selectedLabel = "";
+  String? selectedLabel;
   final taskNameController = TextEditingController();
   final taskDescriptionController = TextEditingController();
 
@@ -106,11 +106,27 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
 
   // Save Task Submit
   void saveTask() {
+    final taskName = taskNameController.text;
+    final taskDescription = taskDescriptionController.text;
     // Check for text values
-    // Check for priority
-    // Check for label
-
-    // Save Task
+    if (taskName.isEmpty || taskDescription.isEmpty) {
+      const snackBar = SnackBar(
+        content: Text('Task name and description are required.'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else if (selectedPriority == -1) {
+      const snackBar = SnackBar(
+        content: Text('Please select a priority level.'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else if (selectedLabel == null) {
+      const snackBar = SnackBar(
+        content: Text('Please select a label.'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      // Save Task LOGIC
+    }
   }
 
   @override
@@ -314,12 +330,7 @@ class _AddTaskOverlayState extends State<AddTaskOverlay> {
                             ),
                           ),
                         ),
-                        onPressed: () {
-                          //navigate to task list screen
-
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const TaskList()));
-                        },
+                        onPressed: saveTask,
                         child: const Text(
                           'Save Task',
                           style: TextStyle(
